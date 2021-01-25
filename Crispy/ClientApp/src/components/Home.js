@@ -1,26 +1,92 @@
 import React, { Component } from 'react';
+import { Link, Route, Switch } from 'react-router-dom';
+import AccountCenter from '../accounts/AccountCenter';
+import Dashboard from './Dashboard';
+import { Layout, Menu, Dropdown } from 'antd';
+import {
+    MenuUnfoldOutlined,
+    MenuFoldOutlined,
+    UserOutlined,
+    VideoCameraOutlined,
+    UploadOutlined,
+    DashboardOutlined,
+    DownOutlined
+} from '@ant-design/icons';
 
-export class Home extends Component {
+const { Sider, Header } = Layout;
+
+const menu = (
+    <Menu>
+        <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
+                1st menu item
+      </a>
+        </Menu.Item>
+        <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
+                2nd menu item
+      </a>
+        </Menu.Item>
+        <Menu.Item>
+            <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
+                3rd menu item
+      </a>
+        </Menu.Item>
+        <Menu.Item danger>a danger item</Menu.Item>
+    </Menu>
+);
+
+export default class Home extends Component {
     static displayName = Home.name;
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            collapsed: false
+        };
+    }
+
+    toggle = () => {
+        this.setState({
+            collapsed: !this.state.collapsed,
+        });
+    };
 
     render() {
         return (
-            <div>
-                <h1>Hello, world!</h1>
-                <p>Welcome to your new single-page application, built with:</p>
-                <ul>
-                    <li><a href='https://get.asp.net/'>ASP.NET Core</a> and <a href='https://msdn.microsoft.com/en-us/library/67ef8sbd.aspx'>C#</a> for cross-platform server-side code</li>
-                    <li><a href='https://facebook.github.io/react/'>React</a> for client-side code</li>
-                    <li><a href='http://getbootstrap.com/'>Bootstrap</a> for layout and styling</li>
-                </ul>
-                <p>To help you get started, we have also set up:</p>
-                <ul>
-                    <li><strong>Client-side navigation</strong>. For example, click <em>Counter</em> then <em>Back</em> to return here.</li>
-                    <li><strong>Development server integration</strong>. In development mode, the development server from <code>create-react-app</code> runs in the background automatically, so your client-side resources are dynamically built on demand and the page refreshes when you modify any file.</li>
-                    <li><strong>Efficient production builds</strong>. In production mode, development-time features are disabled, and your <code>dotnet publish</code> configuration produces minified, efficiently bundled JavaScript files.</li>
-                </ul>
-                <p>The <code>ClientApp</code> subdirectory is a standard React application based on the <code>create-react-app</code> template. If you open a command prompt in that directory, you can run <code>npm</code> commands such as <code>npm test</code> or <code>npm install</code>.</p>
-            </div>
+            <Layout className="h-screen">
+                <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
+                    <div className="logo" />
+                    <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
+                        <Menu.Item key="1" icon={<DashboardOutlined />}><Link to="/" />Dashboard</Menu.Item>
+                        <Menu.Item key="2" icon={<UserOutlined />}>nav 1</Menu.Item>
+                        <Menu.Item key="3" icon={<VideoCameraOutlined />}>nav 2</Menu.Item>
+                        <Menu.Item key="4" icon={<UploadOutlined />}>nav 3</Menu.Item>
+                        <Menu.Item key="5" icon={<UserOutlined />}><Link to="account-center" />Account</Menu.Item>
+                    </Menu>
+                </Sider>
+                <Layout className="site-layout">
+                    <Header className="bg-white flex justify-between" style={{ padding: 0 }}>
+                        {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
+                            className: 'trigger',
+                            onClick: this.toggle,
+                        })}
+                        <Dropdown overlay={menu} className="px-4">
+                            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
+                                Hover me <DownOutlined />
+                            </a>
+                        </Dropdown>
+                    </Header>
+                    <Switch>
+                        <Route path="/account-center">
+                            <AccountCenter />
+                        </Route>
+                        <Route path="/">
+                            <Dashboard />
+                        </Route>
+                    </Switch>
+                </Layout>
+            </Layout>
         );
     }
 }

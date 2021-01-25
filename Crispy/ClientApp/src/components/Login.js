@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { Form, Input, Button, Checkbox } from 'antd';
 import Layout, { Content, Footer } from 'antd/lib/layout/layout';
+import axios from 'axios';
 import {
     UserOutlined,
     LockOutlined,
@@ -17,7 +18,11 @@ const Login = (props) => {
 
     const onFinishFailed = (errorInfo) => {
         console.log('Failed:', errorInfo);
-        props.authenticated();
+        axios.post('/home/login').then(response => {
+            if (response.data) {
+                props.authenticated();
+            }
+        })
     };
 
     return (
