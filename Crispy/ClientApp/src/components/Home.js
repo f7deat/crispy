@@ -1,8 +1,9 @@
-import React, { Component } from 'react';
+﻿import React, { Component } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import AccountCenter from '../accounts/AccountCenter';
+import AccountList from '../accounts/AccountList';
 import Dashboard from './Dashboard';
-import { Layout, Menu, Dropdown } from 'antd';
+import { Layout, Menu, Dropdown, Button } from 'antd';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
@@ -10,31 +11,24 @@ import {
     VideoCameraOutlined,
     UploadOutlined,
     DashboardOutlined,
-    DownOutlined
+    TranslationOutlined,
+    LogoutOutlined
 } from '@ant-design/icons';
+import AccountSetting from '../accounts/AccountSetting';
 
 const { Sider, Header } = Layout;
+const { SubMenu } = Menu;
 
-const menu = (
+const lang = (
     <Menu>
         <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.alipay.com/">
-                1st menu item
-      </a>
+            Tiếng Việt
         </Menu.Item>
         <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.taobao.com/">
-                2nd menu item
-      </a>
+            Tiếng Anh
         </Menu.Item>
-        <Menu.Item>
-            <a target="_blank" rel="noopener noreferrer" href="http://www.tmall.com/">
-                3rd menu item
-      </a>
-        </Menu.Item>
-        <Menu.Item danger>a danger item</Menu.Item>
     </Menu>
-);
+)
 
 export default class Home extends Component {
     static displayName = Home.name;
@@ -52,7 +46,20 @@ export default class Home extends Component {
         });
     };
 
+
     render() {
+
+
+        const menu = (
+            <Menu>
+                <Menu.Item>
+                    <Link to="account-center"><UserOutlined /> Hồ sơ</Link>
+                </Menu.Item>
+                <Menu.Item danger onClick={this.props.authenticated}>
+                    <LogoutOutlined /> Đăng xuất
+                </Menu.Item>
+            </Menu>
+        )
         return (
             <Layout className="h-screen">
                 <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
@@ -62,26 +69,49 @@ export default class Home extends Component {
                         <Menu.Item key="2" icon={<UserOutlined />}>nav 1</Menu.Item>
                         <Menu.Item key="3" icon={<VideoCameraOutlined />}>nav 2</Menu.Item>
                         <Menu.Item key="4" icon={<UploadOutlined />}>nav 3</Menu.Item>
-                        <Menu.Item key="5" icon={<UserOutlined />}><Link to="account-center" />Account</Menu.Item>
+                        <SubMenu key="sub1" icon={<UserOutlined />} title="Nhân viên">
+                            <Menu.Item key="5">
+                                <Link to="account-center">Account</Link>
+                            </Menu.Item>
+                            <Menu.Item key="6">
+                                <Link to="account-list">Danh sách</Link>
+                            </Menu.Item>
+                            <Menu.Item key="7">Option 7</Menu.Item>
+                            <Menu.Item key="8">Option 8</Menu.Item>
+                        </SubMenu>
                     </Menu>
                 </Sider>
-                <Layout className="site-layout">
-                    <Header className="bg-white flex justify-between" style={{ padding: 0 }}>
+                <Layout>
+                    <Header className="bg-white flex justify-between items-center p-0">
                         {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
                             className: 'trigger',
                             onClick: this.toggle,
                         })}
-                        <Dropdown overlay={menu} className="px-4">
-                            <a className="ant-dropdown-link" onClick={e => e.preventDefault()}>
-                                Hover me <DownOutlined />
-                            </a>
-                        </Dropdown>
+                        <div className="flex px-3 items-center">
+                            <Dropdown overlay={menu}>
+                                <Button type="text" size="large" className="flex items-center">
+                                    <img alt="avatar" src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" width={24} height={24} />
+                                    <span className="ml-2">Đinh Công Tân</span>
+                                </Button>
+                            </Dropdown>
+                            <Dropdown overlay={lang}>
+                                <Button type="text" size="large">
+                                    <TranslationOutlined />
+                                </Button>
+                            </Dropdown>
+                        </div>
                     </Header>
                     <Switch>
+                        <Route path="/account-setting">
+                            <AccountSetting />
+                        </Route>
+                        <Route path="/account-list">
+                            <AccountList />
+                        </Route>
                         <Route path="/account-center">
                             <AccountCenter />
                         </Route>
-                        <Route path="/">
+                        <Route exact path="/">
                             <Dashboard />
                         </Route>
                     </Switch>

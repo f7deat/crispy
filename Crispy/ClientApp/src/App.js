@@ -13,7 +13,7 @@ export default class App extends Component {
     }
     authenticated = () => {
         this.setState({
-            isAuthenticated: true
+            isAuthenticated: !this.state.isAuthenticated
         })
     }
 
@@ -21,7 +21,7 @@ export default class App extends Component {
         return (
             <div className="h-full">
                 {
-                    this.state.isAuthenticated ? (<Home />) : (<Login authenticated={this.authenticated} />)
+                    this.state.isAuthenticated ? (<Home authenticated={this.authenticated} />) : (<Login authenticated={this.authenticated} />)
                 }
             </div>
 
