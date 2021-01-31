@@ -2,22 +2,32 @@ import React, { Component } from 'react';
 import './custom.css'
 import Login from './components/Login';
 import Home from './components/Home';
+import axios from 'axios';
 
 export default class App extends Component {
     static displayName = App.name;
+
     constructor(props) {
         super(props);
         this.state = {
             isAuthenticated: false
         };
     }
-    authenticated = () => {
+
+    authenticated = (isAuthenticated) => {
         this.setState({
-            isAuthenticated: !this.state.isAuthenticated
+            isAuthenticated: isAuthenticated
+        })
+    }
+
+    componentDidMount() {
+        axios.get('/Home/IsAuthenticated').then(response => {
+            this.authenticated(response.data);
         })
     }
 
     render() {
+
         return (
             <div className="h-full">
                 {

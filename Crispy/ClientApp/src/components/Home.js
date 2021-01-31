@@ -8,13 +8,14 @@ import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
     UserOutlined,
-    VideoCameraOutlined,
-    UploadOutlined,
     DashboardOutlined,
     TranslationOutlined,
-    LogoutOutlined
+    LogoutOutlined,
+    AppstoreAddOutlined
 } from '@ant-design/icons';
 import AccountSetting from '../accounts/AccountSetting';
+import ProductList from '../products/ProductList';
+import ProductSetting from '../products/ProductSetting';
 
 const { Sider, Header } = Layout;
 const { SubMenu } = Menu;
@@ -55,7 +56,7 @@ export default class Home extends Component {
                 <Menu.Item>
                     <Link to="account-center"><UserOutlined /> Hồ sơ</Link>
                 </Menu.Item>
-                <Menu.Item danger onClick={this.props.authenticated}>
+                <Menu.Item danger onClick={() => this.props.authenticated(false)}>
                     <LogoutOutlined /> Đăng xuất
                 </Menu.Item>
             </Menu>
@@ -66,18 +67,17 @@ export default class Home extends Component {
                     <div className="logo" />
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                         <Menu.Item key="1" icon={<DashboardOutlined />}><Link to="/" />Dashboard</Menu.Item>
-                        <Menu.Item key="2" icon={<UserOutlined />}>nav 1</Menu.Item>
-                        <Menu.Item key="3" icon={<VideoCameraOutlined />}>nav 2</Menu.Item>
-                        <Menu.Item key="4" icon={<UploadOutlined />}>nav 3</Menu.Item>
+                        <Menu.Item key="2" icon={<AppstoreAddOutlined />}><Link to="/product-list" />Sản phẩm</Menu.Item>
                         <SubMenu key="sub1" icon={<UserOutlined />} title="Nhân viên">
                             <Menu.Item key="5">
-                                <Link to="account-center">Account</Link>
+                                <Link to="/account-center">Account</Link>
                             </Menu.Item>
                             <Menu.Item key="6">
-                                <Link to="account-list">Danh sách</Link>
+                                <Link to="/account-list">Danh sách</Link>
                             </Menu.Item>
-                            <Menu.Item key="7">Option 7</Menu.Item>
-                            <Menu.Item key="8">Option 8</Menu.Item>
+                            <Menu.Item key="7">
+                                <Link to="/account-setting">Hồ sơ</Link>
+                            </Menu.Item>
                         </SubMenu>
                     </Menu>
                 </Sider>
@@ -102,10 +102,16 @@ export default class Home extends Component {
                         </div>
                     </Header>
                     <Switch>
-                        <Route path="/account-setting">
+                        <Route exact path="/product-setting/:id?">
+                            <ProductSetting />
+                        </Route>
+                        <Route exact path="/product-list">
+                            <ProductList />
+                        </Route>
+                        <Route path="/account-setting/:id?">
                             <AccountSetting />
                         </Route>
-                        <Route path="/account-list">
+                        <Route exact path="/account-list">
                             <AccountList />
                         </Route>
                         <Route path="/account-center">

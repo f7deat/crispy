@@ -1,6 +1,6 @@
 ﻿import React from 'react';
 import axios from 'axios';
-import { Form, Input, Button, Checkbox } from 'antd';
+import { Form, Input, Button, Checkbox, message } from 'antd';
 import {
     UserOutlined,
     LockOutlined,
@@ -8,17 +8,21 @@ import {
     GoogleCircleFilled
 } from '@ant-design/icons';
 
-const AccountRegister = (props) => {
+const AccountRegister = ({ authenticated }) => {
 
     const onFinish = (values) => {
-        console.log('Success:', values);
-    };
+        axios.post('/home/register', values).then(response => {
+            if (response.data.succeeded) {
+                axios.post('/home/login', values).then(response => {
+                    if (response.succeeded) {
+                        authenticated(true);
+                    }
+                })
+            } else {
+                response.data.errors.forEach(value => {
+                    message.error(value.description)
+                })
 
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-        axios.post('/home/login').then(response => {
-            if (response.data) {
-                props.authenticated();
             }
         })
     };
@@ -30,7 +34,6 @@ const AccountRegister = (props) => {
                 remember: true
             }}
             onFinish={onFinish}
-            onFinishFailed={onFinishFailed}
             layout="vertical"
             className="w-96"
         >

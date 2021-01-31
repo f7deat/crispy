@@ -1,6 +1,7 @@
 ﻿import React from 'react';
 import { Form, Input, Button, Checkbox, Tabs } from 'antd';
 import Layout, { Content, Footer } from 'antd/lib/layout/layout';
+import AccountRegister from '../accounts/AccountRegister';
 import axios from 'axios';
 import {
     UserOutlined,
@@ -10,11 +11,11 @@ import {
     FacebookFilled,
     GoogleCircleFilled
 } from '@ant-design/icons';
-import AccountRegister from '../accounts/AccountRegister';
 
 const { TabPane } = Tabs;
 
-const Login = (props) => {
+const Login = ({ authenticated }) => {
+
     const onFinish = (values) => {
         console.log('Success:', values);
     };
@@ -23,7 +24,7 @@ const Login = (props) => {
         console.log('Failed:', errorInfo);
         axios.post('/home/login').then(response => {
             if (response.data) {
-                props.authenticated();
+                authenticated(true);
             }
         })
     };
@@ -93,7 +94,7 @@ const Login = (props) => {
                         </Form>
                     </TabPane>
                     <TabPane tab="Đăng ký" key="2">
-                        <AccountRegister />
+                        <AccountRegister authenticated={authenticated}/>
                     </TabPane>
                 </Tabs>
 
