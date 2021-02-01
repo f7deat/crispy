@@ -39,13 +39,11 @@ namespace Crispy.Controllers
             var result = await _userManager.UpdateAsync(data);
             return Ok(new { result.Succeeded, result.Errors });
         }
-        [Route("remove"), HttpPost]
-        public async Task<IActionResult> Remove([FromBody] string id)
+        [Route("delete/{id}"), HttpPost]
+        public async Task<IActionResult> Delete([FromRoute] string id)
         {
             var user = await _userManager.FindByIdAsync(id);
-            user.LockoutEnd = DateTime.Now.AddYears(100);
-
-            var result = await _userManager.UpdateAsync(user);
+            var result = await _userManager.DeleteAsync(user);
             return Ok(new { result.Succeeded, result.Errors });
         }
     }

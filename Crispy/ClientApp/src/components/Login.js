@@ -17,7 +17,11 @@ const { TabPane } = Tabs;
 const Login = ({ authenticated }) => {
 
     const onFinish = (values) => {
-        console.log('Success:', values);
+        axios.post('/home/login', values).then(response => {
+            if (response.succeeded) {
+                authenticated(true);
+            }
+        })
     };
 
     const onFinishFailed = (errorInfo) => {

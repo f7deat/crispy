@@ -26,9 +26,10 @@ const AccountList = () => {
     }, [])
 
     function handleRemove(id) {
-        axios.post('/api/account/remove', id).then(response => {
+        axios.post(`/api/account/delete/${id}`).then(response => {
             if (response.data.succeeded) {
                 setAccounts(accounts.filter(x => x.key !== id))
+                message.info('Xóa nhân viên thành công!');
             } else {
                 response.data.errors.forEach(value => {
                     message.error(value)
@@ -88,7 +89,7 @@ const AccountList = () => {
             <div className="p-4 bg-white">
                 <Tabs defaultActiveKey="1">
                     <TabPane tab="Đang hoạt động" key="1">
-                        <Table columns={columns} dataSource={accounts} rowSelection={rowSelection} />
+                        <Table columns={columns} dataSource={accounts} rowSelection={rowSelection} pagination={{ pageSize: 9 }} />
                     </TabPane>
                     <TabPane tab="Đã nghỉ" key="2">
                         Content of Tab Pane 2
