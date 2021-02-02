@@ -13,41 +13,41 @@ namespace Infrastructure.Repositories
     /// <typeparam name="T"></typeparam>
     public class EfRepository<T> : IAsyncRepository<T> where T : class
     {
-        protected readonly ApplicationDbContext _ontext;
+        protected readonly ApplicationDbContext _context;
 
         public EfRepository(ApplicationDbContext context)
         {
-            _ontext = context;
+            _context = context;
         }
 
         public virtual async Task<T> GetByIdAsync(int id)
         {
-            return await _ontext.Set<T>().FindAsync(id);
+            return await _context.Set<T>().FindAsync(id);
         }
 
         public async Task<IReadOnlyList<T>> ListAllAsync()
         {
-            return await _ontext.Set<T>().ToListAsync();
+            return await _context.Set<T>().ToListAsync();
         }
 
         public async Task<T> AddAsync(T entity)
         {
-            _ontext.Set<T>().Add(entity);
-            await _ontext.SaveChangesAsync();
+            _context.Set<T>().Add(entity);
+            await _context.SaveChangesAsync();
 
             return entity;
         }
 
         public async Task UpdateAsync(T entity)
         {
-            _ontext.Entry(entity).State = EntityState.Modified;
-            await _ontext.SaveChangesAsync();
+            _context.Entry(entity).State = EntityState.Modified;
+            await _context.SaveChangesAsync();
         }
 
         public async Task DeleteAsync(T entity)
         {
-            _ontext.Set<T>().Remove(entity);
-            await _ontext.SaveChangesAsync();
+            _context.Set<T>().Remove(entity);
+            await _context.SaveChangesAsync();
         }
     }
 }

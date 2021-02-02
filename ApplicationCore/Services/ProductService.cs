@@ -2,6 +2,7 @@
 using ApplicationCore.Interfaces.IRepository;
 using ApplicationCore.Interfaces.IService;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
@@ -20,5 +21,9 @@ namespace ApplicationCore.Services
             product.ModifiedDate = DateTime.Now;
             return _productRepository.AddAsync(product);
         }
+
+        public Task<Product> FindAsync(Guid id) => _productRepository.FindAsync(id);
+
+        public Task<IReadOnlyList<Product>> ListAllAsync() => _productRepository.ListAllAsync();
     }
 }

@@ -3,6 +3,7 @@ using ApplicationCore.Interfaces.IService;
 using Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Threading.Tasks;
 
 namespace Crispy.Controllers
@@ -26,6 +27,17 @@ namespace Crispy.Controllers
             product.Modifiedby = userId;
             await _productService.AddAsync(product);
             return CreatedAtAction(nameof(Add), product.Id);
+        }
+        [Route("list-all")]
+        public async Task<IActionResult> ListAll()
+        {
+            return Ok(await _productService.ListAllAsync());
+        }
+
+        [Route("find/{id}")]
+        public async Task<IActionResult> Find([FromRoute] Guid id)
+        {
+            return Ok(await _productService.FindAsync(id));
         }
     }
 }
