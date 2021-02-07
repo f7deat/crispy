@@ -9,7 +9,7 @@ namespace Crispy.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AccountController : ControllerBase
+    public class AccountController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
         public AccountController(UserManager<ApplicationUser> userManager)

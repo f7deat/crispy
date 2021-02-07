@@ -9,5 +9,6 @@ namespace ApplicationCore.Interfaces.IRepository
     public interface IProductRepository : IAsyncRepository<Product>
     {
         Task<Product> FindAsync(Guid id);
+        Task<IEnumerable<Product>> GetListInStockAsync();
     }
 }

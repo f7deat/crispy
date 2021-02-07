@@ -4,6 +4,11 @@ import AccountCenter from '../accounts/AccountCenter';
 import AccountList from '../accounts/AccountList';
 import Dashboard from './Dashboard';
 import { Layout, Menu, Dropdown, Button } from 'antd';
+import AccountSetting from '../accounts/AccountSetting';
+import ProductList from '../products/ProductList';
+import ProductSetting from '../products/ProductSetting';
+import OrderList from '../orders/OrderList';
+import OrderSetting from '../orders/OrderSetting';
 import {
     MenuUnfoldOutlined,
     MenuFoldOutlined,
@@ -11,11 +16,10 @@ import {
     DashboardOutlined,
     TranslationOutlined,
     LogoutOutlined,
-    AppstoreAddOutlined
+    AppstoreAddOutlined,
+    InboxOutlined
 } from '@ant-design/icons';
-import AccountSetting from '../accounts/AccountSetting';
-import ProductList from '../products/ProductList';
-import ProductSetting from '../products/ProductSetting';
+import { OrderType } from '../models/OrderModel';
 
 const { Sider, Header } = Layout;
 const { SubMenu } = Menu;
@@ -68,8 +72,9 @@ export default class Home extends Component {
                     <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                         <Menu.Item key="1" icon={<DashboardOutlined />}><Link to="/" />Dashboard</Menu.Item>
                         <Menu.Item key="2" icon={<AppstoreAddOutlined />}><Link to="/product-list" />Sản phẩm</Menu.Item>
+                        <Menu.Item key="3" icon={<InboxOutlined />}><Link to="/order-list" />Xuất / Nhập</Menu.Item>
                         <SubMenu key="sub1" icon={<UserOutlined />} title="Nhân viên">
-                            <Menu.Item key="3">
+                            <Menu.Item key="4">
                                 <Link to="/account-list">Danh sách</Link>
                             </Menu.Item>
                         </SubMenu>
@@ -96,6 +101,15 @@ export default class Home extends Component {
                         </div>
                     </Header>
                     <Switch>
+                        <Route exact path="/order-setting/export">
+                            <OrderSetting orderType={OrderType.Export} />
+                        </Route>
+                        <Route exact path="/order-setting/import">
+                            <OrderSetting orderType={OrderType.Import} />
+                        </Route>
+                        <Route exact path="/order-list">
+                            <OrderList />
+                        </Route>
                         <Route exact path="/product-setting/:id?">
                             <ProductSetting />
                         </Route>

@@ -38,7 +38,16 @@ namespace ApplicationCore.Services
 
         public Task<Product> FindAsync(Guid id) => _productRepository.FindAsync(id);
 
-        public Task<IReadOnlyList<Product>> ListAllAsync() => _productRepository.ListAllAsync();
+        public async Task<IEnumerable<Product>> GetByOrderTypeAsync(OrderType orderType)
+        {
+            if (orderType == OrderType.Export)
+            {
+                return await _productRepository.GetListInStockAsync();
+            }
+            return await _productRepository.ListAllAsync();
+        }
+
+        public Task<IEnumerable<Product>> ListAllAsync() => _productRepository.ListAllAsync();
 
         public async Task<dynamic> UpdateAsync(Product product)
         {
