@@ -2,9 +2,9 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { IOrderProps } from "../models/props/IOrderProps"
+import { IOrderQueueProps } from "../models/props/IOrderProps"
 
-const OrderQueue = (props: IOrderProps) => {
+const OrderQueue = (props: IOrderQueueProps) => {
     const [products, setProducts] = useState([])
     const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
@@ -17,7 +17,7 @@ const OrderQueue = (props: IOrderProps) => {
                 }
             }));
         });
-    }, [])
+    }, [props.orderType])
 
     const onSelectChange = (e: any) => {
         setSelectedRowKeys(e)
@@ -37,7 +37,7 @@ const OrderQueue = (props: IOrderProps) => {
         },
         {
             title: 'Tác vụ',
-            render: () => <Button type="primary">Thêm</Button>
+            render: (text, record) => <Button type="primary" onClick={() => props.setProducts(record)}>Thêm</Button>
         }
     ]
     return (
