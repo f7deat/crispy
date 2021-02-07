@@ -13,7 +13,7 @@ const AccountSetting = () => {
     const [fields, setFields] = useState({})
 
     useEffect(() => {
-        axios.get(`/api/account/get/${id}`).then(response => {
+        axios.get(`/api/account/get/${id || '0'}`).then(response => {
             setAccount(response.data);
             setFields([
                 {
@@ -26,7 +26,7 @@ const AccountSetting = () => {
                 }
             ])
         })
-    }, [])
+    }, [id])
 
     const handleUpdate = (values) => {
         let item = account;

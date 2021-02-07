@@ -69,14 +69,8 @@ export default class Home extends Component {
                         <Menu.Item key="1" icon={<DashboardOutlined />}><Link to="/" />Dashboard</Menu.Item>
                         <Menu.Item key="2" icon={<AppstoreAddOutlined />}><Link to="/product-list" />Sản phẩm</Menu.Item>
                         <SubMenu key="sub1" icon={<UserOutlined />} title="Nhân viên">
-                            <Menu.Item key="5">
-                                <Link to="/account-center">Account</Link>
-                            </Menu.Item>
-                            <Menu.Item key="6">
+                            <Menu.Item key="3">
                                 <Link to="/account-list">Danh sách</Link>
-                            </Menu.Item>
-                            <Menu.Item key="7">
-                                <Link to="/account-setting">Hồ sơ</Link>
                             </Menu.Item>
                         </SubMenu>
                     </Menu>

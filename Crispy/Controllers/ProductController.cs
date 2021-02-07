@@ -39,5 +39,23 @@ namespace Crispy.Controllers
         {
             return Ok(await _productService.FindAsync(id));
         }
+
+        [HttpPost, Route("delete/{id}")]
+        public async Task<IActionResult> Delete([FromRoute] Guid id) => Ok(await _productService.DeleteAsync(id));
+
+        [Route("update"), HttpPost]
+        public async Task<IActionResult> Update([FromBody] Product product)
+        {
+            string userId = _userManager.GetUserId(User);
+            product.Modifiedby = userId;
+            product.CreatedBy ??= userId;
+            return Ok(await _productService.UpdateAsync(product));
+        }
+
+        [Route("export"), HttpPost]
+        public async Task<IActionResult> Export()
+        {
+            return File(await _productService.ExportAsync(), "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+        }
     }
 }

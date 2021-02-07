@@ -7,22 +7,22 @@ const Dashboard = () => {
         <Content className="p-4">
                 <Row gutter={16}>
                     <Col span={6}>
-                        <Card title="Card title" bordered={false}>
+                        <Card title="Nhân viên" bordered={false}>
+                            Card content
+                        </Card>
+                    </Col>
+                    <Col span={6}>
+                        <Card title="Sản phẩm" bordered={false}>
                             Card content
         </Card>
                     </Col>
                     <Col span={6}>
-                        <Card title="Card title" bordered={false}>
+                        <Card title="Nhập" bordered={false}>
                             Card content
         </Card>
                     </Col>
                     <Col span={6}>
-                        <Card title="Card title" bordered={false}>
-                            Card content
-        </Card>
-                    </Col>
-                    <Col span={6}>
-                        <Card title="Card title" bordered={false}>
+                        <Card title="Xuất" bordered={false}>
                             Card content
         </Card>
                     </Col>

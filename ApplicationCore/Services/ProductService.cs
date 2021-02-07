@@ -1,8 +1,10 @@
 ﻿using ApplicationCore.Entities;
+using ApplicationCore.Helpers;
 using ApplicationCore.Interfaces.IRepository;
 using ApplicationCore.Interfaces.IService;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
@@ -22,8 +24,43 @@ namespace ApplicationCore.Services
             return _productRepository.AddAsync(product);
         }
 
+        public async Task<bool> DeleteAsync(Guid id)
+        {
+            var product = await _productRepository.FindAsync(id);
+            return await _productRepository.RemoveAsync(product) > 0;
+        }
+
+        public async Task<dynamic> ExportAsync()
+        {
+            var products = await _productRepository.ListAllAsync();
+            return await ExcelHelper.ExportProduct(products.ToList());
+        }
+
         public Task<Product> FindAsync(Guid id) => _productRepository.FindAsync(id);
 
         public Task<IReadOnlyList<Product>> ListAllAsync() => _productRepository.ListAllAsync();
+
+        public async Task<dynamic> UpdateAsync(Product product)
+        {
+            string error = string.Empty;
+            bool succeeded = false;
+            try
+            {
+                if (product?.SalePrice > product?.UnitPrice)
+                {
+                    error = "Giá khuyến mại không được lớn hơn giá bán!";
+                }
+                else
+                {
+                    product.ModifiedDate = DateTime.Now;
+                    succeeded = await _productRepository.UpdateAsync(product) > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                error = ex.ToString();
+            }
+            return new { succeeded, error };
+        }
     }
 }

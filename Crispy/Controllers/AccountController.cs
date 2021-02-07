@@ -24,9 +24,9 @@ namespace Crispy.Controllers
         }
 
         [Route("get/{id}")]
-        public async Task<IActionResult> GetAccount([FromRoute]string id)
+        public async Task<IActionResult> GetAccount([FromRoute] string id)
         {
-            var user = await _userManager.FindByIdAsync(id);
+            var user = "0".Equals(id) ? await _userManager.GetUserAsync(User) : await _userManager.FindByIdAsync(id);
             return Ok(user);
         }
 

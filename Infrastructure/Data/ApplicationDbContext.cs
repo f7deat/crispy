@@ -14,5 +14,7 @@ namespace Infrastructure.Data
         // dotnet ef migrations add InitialCreatedBy -s Crispy -p Infrastructure
         // dotnet ef database update -s Crispy -p Infrastructure
         public DbSet<Product> Products { get; set; }
+        public DbSet<Order> Orders { get; set; }
+        public DbSet<OrderDetail> OrderDetails { get; set; }
     }
 }

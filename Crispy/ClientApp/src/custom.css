@@ -25,12 +25,20 @@ code {
     display: flex;
 }
 
+.font-bold {
+    font-weight: bold;
+}
+
 .h-full {
     height: 100%;
 }
 
 .h-screen {
     height: 100vh;
+}
+
+.inline-block {
+    display: inline-block;
 }
 
 .items-center {
@@ -59,6 +67,14 @@ code {
 
 .mr-2 {
     margin-right: 0.5rem;
+}
+
+.mr-3 {
+    margin-right: 0.75rem;
+}
+
+.mr-4 {
+    margin-right: 1rem;
 }
 
 .ml-2 {
