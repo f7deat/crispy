@@ -22,6 +22,8 @@ namespace ApplicationCore.Entities
         public DateTime ModifiedDate { get; set; }
         [Column(TypeName = "money")]
         public decimal? SalePrice { get; set; }
+        [Column(TypeName = "money")]
+        public decimal? RegularPrice { get; set; }
         [StringLength(500)]
         public string Thumbnail { get; set; }
         [StringLength(450)]

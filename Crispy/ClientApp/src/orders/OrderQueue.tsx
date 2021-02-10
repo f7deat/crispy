@@ -2,20 +2,16 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { Product } from "../models/entities/Product";
 import { IOrderQueueProps } from "../models/props/IOrderProps"
 
 const OrderQueue = (props: IOrderQueueProps) => {
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState<Product[]>([])
     const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
     useEffect(() => {
         axios.get(`/api/order/get-list-product?orderType=${props.orderType}`).then(response => {
-            setProducts(response.data.map((x: any) => {
-                return {
-                    key: x.id,
-                    name: x.name
-                }
-            }));
+            setProducts(response.data);
         });
     }, [props.orderType])
 
@@ -29,20 +25,25 @@ const OrderQueue = (props: IOrderQueueProps) => {
         onChange: onSelectChange,
     }
 
+    const addProduct = (product: Product) => {
+        props.setProducts((current: Product[]) => [...current, product])
+        setProducts(products.filter(x => x.id !== product.id))
+    }
+
     const columns = [
         {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
-            render: (text: string, record: any) => <Link to={`/product-setting/${record.key}`}>{text}</Link>,
+            render: (text: string, record: Product) => <Link to={`/product-setting/${record.id}`}>{text}</Link>,
         },
         {
             title: 'Tác vụ',
-            render: (text, record) => <Button type="primary" onClick={() => props.setProducts(record)}>Thêm</Button>
+            render: (text: any, record: Product) => <Button type="primary" onClick={() => addProduct(record)}>Thêm</Button>
         }
     ]
     return (
         <div>
-            <Table columns={columns} dataSource={products} rowSelection={rowSelection} pagination={{ pageSize: 9 }} />
+            <Table columns={columns} dataSource={products} rowSelection={rowSelection} pagination={{ pageSize: 9 }} rowKey="id" />
         </div>
     )
 }

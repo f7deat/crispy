@@ -1,13 +1,11 @@
-﻿import { Dispatch, SetStateAction } from "react";
-import { OrderType } from "../OrderModel";
-import { ProductModel } from "../ProductModel";
+﻿import { OrderType } from "../OrderModel";
 
 interface IOrderProps {
     orderType: OrderType;
 }
 
 interface IOrderQueueProps extends IOrderProps {
-    setProducts: Dispatch<SetStateAction<ProductModel[]>>
+    setProducts: any
 }
 
 export type { IOrderProps, IOrderQueueProps }

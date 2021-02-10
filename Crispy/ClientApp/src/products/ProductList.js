@@ -17,15 +17,7 @@ const ProductList = () => {
 
     useEffect(() => {
         axios.get('/api/product/list-all').then(response => {
-            let remap = response.data.map(x => {
-                return {
-                    key: x.id,
-                    name: x.name,
-                    modifiedDate: x.modifiedDate,
-                    unitStock: x.unitStock
-                }
-            })
-            setProducts(remap);
+            setProducts(response.data);
         })
     }, [])
 
@@ -44,28 +36,46 @@ const ProductList = () => {
         {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
-            render: (text, record) => <Link to={`/product-setting/${record.key}`}>{text}</Link>,
+            render: (text, record) => <Link to={`/product-setting/${record.id}`}>{text}</Link>,
         },
         {
-            title: 'Ngày cập nhật',
-            dataIndex: 'modifiedDate'
+            title: 'Đơn giá',
+            dataIndex: 'unitPrice',
+            render: (text) => (
+                <div>
+                    <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(text)}</span>
+                </div>
+            )
+        },
+        {
+            title: 'Giá khuyến mại',
+            dataIndex: 'salePrice',
+            render: (text) => (
+                <div className="text-red-600">
+                    {text !== null ? `${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(text)}` : '-'}
+                </div>
+            )
         },
         {
             title: 'Kho',
             dataIndex: 'unitStock'
         },
         {
+            title: 'Ngày cập nhật',
+            dataIndex: 'modifiedDate'
+        },
+        {
             title: 'Action',
             render: (text, record) => (
                 <Space size="small">
-                    <Link to={`/product-center/${record.key}`}>
+                    <Link to={`/product-center/${record.id}`}>
                         <Button icon={<FolderOutlined />}></Button>
                     </Link>
-                    <Link to={`/product-setting/${record.key}`}>
+                    <Link to={`/product-setting/${record.id}`}>
                         <Button type="primary" icon={<EditOutlined />}></Button>
                     </Link>
                     <Popconfirm title="Bạn có chắc chắn muốn xóa?"
-                        onConfirm={() => handleDelete(record.key)}
+                        onConfirm={() => handleDelete(record.id)}
                         okText="Xóa"
                         cancelText="Hủy"
                     >
@@ -114,7 +124,7 @@ const ProductList = () => {
                 </Link>
             </div>
             <div className="bg-white p-4">
-                <Table columns={columns} dataSource={products} rowSelection={rowSelection} pagination={{ pageSize: 9 }} />
+                <Table columns={columns} dataSource={products} rowSelection={rowSelection} pagination={{ pageSize: 9 }} rowKey="id" />
             </div>
         </div>
     )
