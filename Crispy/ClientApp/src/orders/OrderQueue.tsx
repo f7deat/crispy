@@ -2,11 +2,12 @@
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { Product } from "../models/entities/Product";
+import { ProductOrder } from "../models/interfaces/ProductOrder";
 import { IOrderQueueProps } from "../models/props/IOrderProps"
+import { PlusCircleOutlined } from '@ant-design/icons';
 
 const OrderQueue = (props: IOrderQueueProps) => {
-    const [products, setProducts] = useState<Product[]>([])
+    const [products, setProducts] = useState<ProductOrder[]>([])
     const [selectedRowKeys, setSelectedRowKeys] = useState([])
 
     useEffect(() => {
@@ -25,8 +26,10 @@ const OrderQueue = (props: IOrderQueueProps) => {
         onChange: onSelectChange,
     }
 
-    const addProduct = (product: Product) => {
-        props.setProducts((current: Product[]) => [...current, product])
+    const addProduct = (product: ProductOrder) => {
+        product.quantity = 1;
+        product.price = product.unitPrice;
+        props.setProducts((current: ProductOrder[]) => [...current, product])
         setProducts(products.filter(x => x.id !== product.id))
     }
 
@@ -34,16 +37,19 @@ const OrderQueue = (props: IOrderQueueProps) => {
         {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
-            render: (text: string, record: Product) => <Link to={`/product-setting/${record.id}`}>{text}</Link>,
+            render: (text: string, record: ProductOrder) => <Link to={`/product-setting/${record.id}`}>{text}</Link>,
         },
         {
             title: 'Tác vụ',
-            render: (text: any, record: Product) => <Button type="primary" onClick={() => addProduct(record)}>Thêm</Button>
+            render: (text: any, record: ProductOrder) => <Button type="primary" onClick={() => addProduct(record)}>Thêm</Button>
         }
     ]
     return (
         <div>
-            <Table columns={columns} dataSource={products} rowSelection={rowSelection} pagination={{ pageSize: 9 }} rowKey="id" />
+            <div className="mb-2 text-right">
+                <Link to="/product-seting"><Button type="primary" icon={<PlusCircleOutlined />}>Tạo sản phẩm</Button></Link>
+            </div>
+            <Table columns={columns} dataSource={products} rowSelection={rowSelection} pagination={{ pageSize: 5 }} rowKey="id" />
         </div>
     )
 }

@@ -2,6 +2,7 @@
 import { Link, Route, Switch } from 'react-router-dom';
 import AccountCenter from '../accounts/AccountCenter';
 import AccountList from '../accounts/AccountList';
+import AccountAdd from '../accounts/AccountAdd';
 import Dashboard from './Dashboard';
 import { Layout, Menu, Dropdown, Button } from 'antd';
 import AccountSetting from '../accounts/AccountSetting';
@@ -17,7 +18,9 @@ import {
     TranslationOutlined,
     LogoutOutlined,
     AppstoreAddOutlined,
-    InboxOutlined
+    InboxOutlined,
+    ToolOutlined,
+    FileImageOutlined
 } from '@ant-design/icons';
 import { OrderType } from '../models/OrderModel';
 
@@ -54,17 +57,25 @@ export default class Home extends Component {
 
     render() {
 
-
         const menu = (
             <Menu>
                 <Menu.Item>
-                    <Link to="account-center"><UserOutlined /> Hồ sơ</Link>
+                    <Link to="/account-center"><UserOutlined /> Hồ sơ</Link>
                 </Menu.Item>
                 <Menu.Item danger onClick={() => this.props.authenticated(false)}>
                     <LogoutOutlined /> Đăng xuất
                 </Menu.Item>
             </Menu>
         )
+
+        const toos = (
+            <Menu>
+                <Menu.Item>
+                    <a href="https://f7deat.github.io/jubilant-enigma/" target="_blank" rel="noopener noreferrer"><FileImageOutlined /> Chỉnh sửa ảnh</a>
+                </Menu.Item>
+            </Menu>
+        )
+
         return (
             <Layout className="h-screen">
                 <Sider trigger={null} collapsible collapsed={this.state.collapsed}>
@@ -81,11 +92,15 @@ export default class Home extends Component {
                     </Menu>
                 </Sider>
                 <Layout>
-                    <Header className="bg-white flex justify-between items-center p-0">
-                        {React.createElement(this.state.collapsed ? MenuUnfoldOutlined : MenuFoldOutlined, {
-                            className: 'trigger',
-                            onClick: this.toggle,
-                        })}
+                    <Header className="bg-white flex items-center p-0">
+                        <div className="flex-grow">
+                            <Button type="text" icon={this.state.collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />} onClick={this.toggle} className="ml-4"></Button>
+                            <Dropdown overlay={toos}>
+                                <Button type="text" icon={<ToolOutlined />}>
+                                    Công cụ
+                            </Button>
+                            </Dropdown>
+                        </div>
                         <div className="flex px-3 items-center">
                             <Dropdown overlay={menu}>
                                 <Button type="text" size="large" className="flex items-center">
@@ -115,6 +130,9 @@ export default class Home extends Component {
                         </Route>
                         <Route exact path="/product-list">
                             <ProductList />
+                        </Route>
+                        <Route exact path="/account-add">
+                            <AccountAdd />
                         </Route>
                         <Route path="/account-setting/:id?">
                             <AccountSetting />

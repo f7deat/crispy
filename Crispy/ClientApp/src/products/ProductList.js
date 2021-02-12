@@ -1,5 +1,6 @@
-﻿import React, { useEffect, useState } from 'react';
-import { Button, message, Popconfirm, Space, Table } from 'antd';
+﻿import React, { useEffect, useRef, useState } from 'react';
+import { Button, message, Popconfirm, Space, Table, Input } from 'antd';
+import Highlighter from 'react-highlight-words';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {
@@ -7,19 +8,95 @@ import {
     DeleteOutlined,
     FolderOutlined,
     EditOutlined,
-    FileExcelOutlined
+    FileExcelOutlined,
+    SearchOutlined
 } from '@ant-design/icons';
 
 const ProductList = () => {
 
     const [selectedRowKeys, setSelectedRowKeys] = useState([])
-    const [products, setProducts] = useState([])
+    const [products, setProducts] = useState([]);
+    const [searchText, setSearchText] = useState('');
+    const [searchedColumn, setSearchedColumn] = useState('');
+    const searchInput = useRef(null);
 
     useEffect(() => {
         axios.get('/api/product/list-all').then(response => {
             setProducts(response.data);
         })
-    }, [])
+    }, []);
+
+    const handleSearch = (selectedKeys, confirm, dataIndex) => {
+        confirm();
+        setSearchText(selectedKeys[0]);
+        setSearchedColumn(dataIndex);
+    };
+
+    const handleReset = clearFilters => {
+        clearFilters();
+        setSearchText('');
+    };
+
+    const getColumnSearchProps = dataIndex => ({
+        filterDropdown: ({ setSelectedKeys, selectedKeys, confirm, clearFilters }) => (
+            <div style={{ padding: 8 }}>
+                <Input
+                    ref={searchInput}
+                    placeholder={`Search ${dataIndex}`}
+                    value={selectedKeys[0]}
+                    onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+                    onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                    style={{ width: 188, marginBottom: 8, display: 'block' }}
+                />
+                <Space>
+                    <Button
+                        type="primary"
+                        onClick={() => handleSearch(selectedKeys, confirm, dataIndex)}
+                        icon={<SearchOutlined />}
+                        size="small"
+                        style={{ width: 90 }}
+                    >
+                        Tìm
+                    </Button>
+                    <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
+                        Hủy
+                    </Button>
+                    <Button
+                        type="link"
+                        size="small"
+                        onClick={() => {
+                            confirm({ closeDropdown: false });
+                            setSearchText(selectedKeys[0]);
+                            setSearchedColumn(dataIndex);
+                        }}
+                    >
+                        Lọc
+                    </Button>
+                </Space>
+            </div>
+        ),
+        filterIcon: filtered => <SearchOutlined style={{ color: filtered ? '#1890ff' : undefined }} />,
+        onFilter: (value, record) =>
+            record[dataIndex]
+                ? record[dataIndex].toString().toLowerCase().includes(value.toLowerCase())
+                : '',
+        onFilterDropdownVisibleChange: visible => {
+            if (visible && searchInput.current) {
+                setTimeout(() => searchInput.current.select(), 100);
+            }
+        },
+        render: text =>
+            searchedColumn === dataIndex ? (
+                <Highlighter
+                    highlightStyle={{ backgroundColor: '#ffc069', padding: 0 }}
+                    searchWords={[searchText]}
+                    autoEscape
+                    textToHighlight={text ? text.toString() : ''}
+                />
+            ) : (
+                    text
+                ),
+    });
 
     const handleDelete = (id) => {
         axios.post(`/api/product/delete/${id}`).then(response => {
@@ -37,6 +114,7 @@ const ProductList = () => {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
             render: (text, record) => <Link to={`/product-setting/${record.id}`}>{text}</Link>,
+            ...getColumnSearchProps('name')
         },
         {
             title: 'Đơn giá',
@@ -44,15 +122,6 @@ const ProductList = () => {
             render: (text) => (
                 <div>
                     <span>{new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(text)}</span>
-                </div>
-            )
-        },
-        {
-            title: 'Giá khuyến mại',
-            dataIndex: 'salePrice',
-            render: (text) => (
-                <div className="text-red-600">
-                    {text !== null ? `${new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(text)}` : '-'}
                 </div>
             )
         },

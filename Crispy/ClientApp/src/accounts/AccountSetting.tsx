@@ -7,10 +7,11 @@ import { useParams } from 'react-router-dom';
 const { TabPane } = Tabs;
 
 const AccountSetting = () => {
-    const { id } = useParams();
+    const { id } = useParams<any>();
 
-    const [account, setAccount] = useState({})
-    const [fields, setFields] = useState({})
+    const [account, setAccount] = useState<any>({});
+    const [fields, setFields] = useState<any>({});
+    const [activeTab, setActiveTab] = useState<string>('1');
 
     useEffect(() => {
         axios.get(`/api/account/get/${id || '0'}`).then(response => {
@@ -23,52 +24,82 @@ const AccountSetting = () => {
                 {
                     name: ['phoneNumber'],
                     value: response.data.phoneNumber
+                },
+                {
+                    name: ['salary'],
+                    value: response.data.salary
                 }
             ])
         })
     }, [id])
 
-    const handleUpdate = (values) => {
+    const handleUpdate = (values: any) => {
+        let url = '/api/account/update';
+        switch (activeTab) {
+            case '2': url = '/api/account/update-advance'; break;
+            default:
+        }
         let item = account;
         item.name = values.name;
         item.phoneNumber = values.phoneNumber;
-        axios.post(`/api/account/update`, item).then(response => {
+        item.salary = values.salary;
+        axios.post(url, item).then(response => {
             if (response.data.succeeded) {
                 setAccount(item);
                 message.info('Cập nhật thông tin thành công!');
             } else {
-                response.data.errors.forEach(value => {
+                response.data.errors.forEach((value: any) => {
                     message.warning(value);
                 })
             }
         })
     }
 
+    const handleChangeTab = (tabIndex: string) => {
+        setActiveTab(tabIndex);
+    }
+
     return (
         <div className="p-4">
-            <Tabs tabPosition="left" className="bg-white p-4">
+            <Tabs tabPosition="left" className="bg-white p-4" onChange={handleChangeTab}>
                 <TabPane tab="Cài đặt chung" key="1">
                     <Title level={3}>Cài đặt chung</Title>
                     <Form layout="vertical" onFinish={handleUpdate} fields={fields}>
-                        <Form.Item label="Họ và tên" name="name" >
-                            <Input placeholder="Họ và tên" required />
+                        <Form.Item label="Họ và tên" name="name" rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng nhập họ và tên!',
+                            }
+                        ]}>
+                            <Input placeholder="Họ và tên" />
                         </Form.Item>
                         <Form.Item label="Số điện thoại" name="phoneNumber">
-                            <Input placeholder="Số điện thoại" required/>
+                            <Input placeholder="Số điện thoại"/>
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit">Cập nhật thông tin</Button>
                         </Form.Item>
                     </Form>
                 </TabPane>
-                <TabPane tab="Thông báo" key="2">
+                <TabPane tab="Cài đặt nâng cao" key="2">
+                    <Title level={3}>Cài đặt nâng cao</Title>
+                    <Form layout="vertical" onFinish={handleUpdate} fields={fields}>
+                        <Form.Item label="Lương" name="salary" >
+                            <Input placeholder="Lương" required />
+                        </Form.Item>
+                        <Form.Item>
+                            <Button type="primary" htmlType="submit">Cập nhật thông tin</Button>
+                        </Form.Item>
+                    </Form>
+                </TabPane>
+                <TabPane tab="Thông báo" key="3">
                     <Title level={3}>Thông báo</Title>
                     <Alert message="Comming soon!" type="info" showIcon />
                 </TabPane>
-                <TabPane tab="Khác" key="3">
+                <TabPane tab="Khác" key="4">
                     <Title level={3}>Cài đặt khác</Title>
                     <Alert message="Comming soon!" type="info" showIcon />
-          </TabPane>
+                </TabPane>
             </Tabs>
         </div>
     )

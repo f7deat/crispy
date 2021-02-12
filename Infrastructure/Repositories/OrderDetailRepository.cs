@@ -1,9 +1,10 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces.IRepository;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
@@ -19,6 +20,11 @@ namespace Infrastructure.Repositories
         {
             await _context.AddRangeAsync(data);
             return await _context.SaveChangesAsync() > 0;
+        }
+
+        public async Task<IEnumerable<OrderDetail>> GetInOrderAsync(Guid id)
+        {
+            return await _context.OrderDetails.Where(x => x.OrderId == id).ToListAsync();
         }
     }
 }

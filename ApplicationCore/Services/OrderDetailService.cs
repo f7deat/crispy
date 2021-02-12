@@ -4,7 +4,6 @@ using ApplicationCore.Interfaces.IService;
 using ApplicationCore.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
@@ -12,19 +11,33 @@ namespace ApplicationCore.Services
     public class OrderDetailService : IOrderDetailService
     {
         private readonly IOrderDetailRepository _orderDetailRepository;
-        public OrderDetailService(IOrderDetailRepository orderDetailRepository)
+        private readonly IProductRepository _productRepository;
+
+        public OrderDetailService(IOrderDetailRepository orderDetailRepository, IProductRepository productRepository)
         {
             _orderDetailRepository = orderDetailRepository;
+            _productRepository = productRepository;
         }
-        public async Task<dynamic> AddAsync(Guid orderId, List<OrderDetailModel> orderDetailModels)
+        public async Task<dynamic> AddAsync(Guid orderId, Cart cart)
         {
-            var data = new List<OrderDetail>();
-            foreach (var item in orderDetailModels)
+            bool succeeded = false;
+            string error = string.Empty;
+            try
             {
-                data.Add(new OrderDetail { ProductId = item.ProductId, OrderId = item.OrderId, Quantity = item.Quantity });
+                var data = new List<OrderDetail>();
+                foreach (var item in cart.CartItems)
+                {
+                    var product = await _productRepository.GetByIdAsync(item.Id);
+                    product.UnitStock = cart.OrderType == OrderType.Export ? product.UnitStock - item.Quantity : product.UnitStock + item.Quantity;
+                    data.Add(new OrderDetail { ProductId = item.Id, OrderId = item.OrderId, Quantity = item.Quantity });
+                }
+                succeeded = await _orderDetailRepository.AddRangeAsync(data);
             }
-            bool succeeded = await _orderDetailRepository.AddRangeAsync(data);
-            return new { succeeded };
+            catch (Exception ex)
+            {
+                error = ex.ToString();
+            }
+            return new { succeeded, error };
         }
     }
 }

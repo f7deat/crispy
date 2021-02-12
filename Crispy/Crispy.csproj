@@ -28,19 +28,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Remove="ClientApp\src\helpers\arrayHelper.tsx" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Identity\Identity.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <TypeScriptCompile Include="ClientApp\src\helpers\arrayHelper.tsx">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
-    <TypeScriptCompile Include="ClientApp\src\helpers\formatHelper.tsx" />
+    <Folder Include="ClientApp\src\models\enums\" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

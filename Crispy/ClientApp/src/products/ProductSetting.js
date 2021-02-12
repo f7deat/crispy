@@ -38,10 +38,6 @@ const ProductSetting = () => {
                         value: response.data.unitPrice
                     },
                     {
-                        name: 'salePrice',
-                        value: response.data.salePrice
-                    },
-                    {
                         name: 'unitStock',
                         value: response.data.unitStock
                     },
@@ -173,9 +169,6 @@ const ProductSetting = () => {
                             <Form.Item>
                                 <Form.Item label="Đơn giá" name="unitPrice" className="mr-4 inline-block">
                                     <InputNumber placeholder="Đơn giá" />
-                                </Form.Item>
-                                <Form.Item label="Giá khuyến mại" name="salePrice" className="inline-block mr-4">
-                                    <InputNumber placeholder="Giá khuyến mại" />
                                 </Form.Item>
                                 <Form.Item label="Kho" name="unitStock" className="inline-block">
                                     <InputNumber placeholder="Kho" />

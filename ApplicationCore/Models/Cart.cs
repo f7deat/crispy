@@ -1,14 +1,12 @@
 ﻿using ApplicationCore.Entities;
-using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace ApplicationCore.Models
 {
-    public class OrderModel
+    public class Cart
     {
+        public string CustomerId { get; set; }
         public OrderType OrderType { get; set; }
-
-        public List<OrderDetailModel> OrderDetailModels { get; set; }
+        public List<CartItem> CartItems { get; set; }
     }
 }

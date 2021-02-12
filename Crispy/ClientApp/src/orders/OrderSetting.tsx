@@ -1,17 +1,31 @@
-﻿import React, { Key, useState } from "react";
+﻿import React, { useEffect, useState } from "react";
 import Title from "antd/lib/typography/Title";
 import { OrderType } from "../models/OrderModel";
 import { IOrderProps } from "../models/props/IOrderProps";
-import { Button, InputNumber, Modal, Table } from "antd";
+import { Button, InputNumber, message, Modal, Table } from "antd";
 import OrderQueue from "./OrderQueue";
-import { Product } from "../models/entities/Product";
+import { ProductOrder } from "../models/interfaces/ProductOrder";
 import { Link } from "react-router-dom";
 import { VndFormat } from "../helpers/formatHelper";
+import {
+    DeleteOutlined
+} from '@ant-design/icons';
+import axios from "axios";
 
 const OrderSetting = (props: IOrderProps) => {
     const [visible, setVisible] = useState(false);
-    const [products, setProducts] = useState<Product[]>([]);
+    const [products, setProducts] = useState<ProductOrder[]>([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
+    const [totalPrice, setTotalPrice] = useState(0);
+
+    useEffect(() => {
+        sumPrice();
+        console.log(totalPrice)
+    })
+
+    function sumPrice() {
+        setTotalPrice(products.reduce((a, b) => a + (b['price'] || 0), 0));
+    }
 
     const onSelectChange = (e: any) => {
         setSelectedRowKeys(e)
@@ -22,15 +36,11 @@ const OrderSetting = (props: IOrderProps) => {
         onChange: onSelectChange,
     }
 
-    function changeQuantity(quantity: Key, id: string) {
-        console.log(quantity)
-    }
-
     const columns = [
         {
             title: 'Tên sản phẩm',
             dataIndex: 'name',
-            render: (text: string, record: Product) => <Link to={`/product-setting/${record.id}`}>{text}</Link>,
+            render: (text: string, record: ProductOrder) => <Link to={`/product-setting/${record.id}`}>{text}</Link>,
         },
         {
             title: 'Đơn giá',
@@ -39,26 +49,35 @@ const OrderSetting = (props: IOrderProps) => {
         },
         {
             title: 'Số lượng',
-            dataIndex: 'unitStock',
-            render: (text: number, record: Product) => <InputNumber min={0} max={text} defaultValue={1} onChange={(e: Key) => changeQuantity(e, record.id)} />
+            render: (record: ProductOrder) => <InputNumber min={1} max={props.orderType === OrderType.Export ? record.unitStock : 999999} defaultValue={record.quantity} onChange={(value) => handleChangeQuantity(value, record)} />
         },
         {
             title: 'Tác vụ',
-            render: (record: Product) => (
-                <div>
-                    <Button type="primary" danger onClick={() => setProducts(products.filter(x => x.id !== record.id))}>Xóa</Button>
-                </div>
-            )
+            render: (record: ProductOrder) => <Button type="primary" danger onClick={() => setProducts(products.filter(x => x.id !== record.id))} icon={<DeleteOutlined />}></Button>
         }
     ]
 
-    const handleChange = () => {
-
-        console.log(products)
+    const handleConfirm = () => {
+        if (products.length > 0) {
+            axios.post('/api/order/add-to-cart', {
+                orderType: props.orderType,
+                cartItems: products
+            }).then(response => {
+                if (response.data.succeeded) {
+                    message.info('Thao tác thành công!');
+                } else {
+                    message.error(response.data.error);
+                }
+            })
+        } else {
+            message.error('Bạn chưa chọn sản phẩm!');
+        }
     }
 
-    const handleConfirm = () => {
-
+    const handleChangeQuantity = (value: any, record: ProductOrder) => {
+        record.quantity = Number(value);
+        record.price = record.quantity * record.unitPrice;
+        sumPrice();
     }
 
     return (
@@ -86,14 +105,14 @@ const OrderSetting = (props: IOrderProps) => {
                         dataSource={products}
                         rowSelection={rowSelection}
                         pagination={{ pageSize: 9 }}
-                        onChange={handleChange} rowKey={(record: Product) => record.id}
+                        rowKey={(record: ProductOrder) => record.id}
                     />
                     <div className="text-right mt-3">
                         <div className="font-bold">
                             Thành tiền
                         </div>
                         <div className="text-red-600">
-                            {VndFormat(products.reduce((a, b) => a + (b['unitPrice'] || 0), 0))}
+                            {VndFormat(totalPrice)}
                         </div>
                     </div>
                 </div>
@@ -102,6 +121,7 @@ const OrderSetting = (props: IOrderProps) => {
                     <Button type="primary" danger={props.orderType === OrderType.Import} onClick={handleConfirm}>Xác nhận</Button>
                 </div>
             </div>
+
         </div>
     )
 }

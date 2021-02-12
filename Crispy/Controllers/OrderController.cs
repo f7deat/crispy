@@ -35,13 +35,25 @@ namespace Crispy.Controllers
             return Ok(await _productService.GetByOrderTypeAsync(orderType));
         }
 
-        [Route("add")]
-        public async Task<IActionResult> Add(OrderModel order)
+        [Route("add-to-cart"), HttpPost]
+        public async Task<IActionResult> AddToCart([FromBody]Cart cart)
         {
             string userId = _userManager.GetUserId(User);
-            var orderId = await _orderService.AddAsync(order, userId);
-            var response = await _orderDetailService.AddAsync(orderId, order.OrderDetailModels);
-            return CreatedAtAction(nameof(Add), response);
+            var orderId = await _orderService.AddAsync(cart, userId);
+            var response = await _orderDetailService.AddAsync(orderId, cart);
+            return CreatedAtAction(nameof(AddToCart), response);
+        }
+
+        [Route("get-list")]
+        public async Task<IActionResult> GetList()
+        {
+            return Ok(await _orderService.GetListAsync());
+        }
+
+        [Route("delete/{id}"), HttpPost]
+        public async Task<IActionResult> Delete([FromRoute] Guid id)
+        {
+            return Ok(await _orderService.RemoveAsync(id));
         }
     }
 }

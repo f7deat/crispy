@@ -1,6 +1,7 @@
 ﻿using ApplicationCore.Interfaces.IRepository;
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -50,5 +51,9 @@ namespace Infrastructure.Repositories
             return await _context.SaveChangesAsync();
         }
 
+        public virtual async Task<T> GetByIdAsync(Guid id)
+        {
+            return await _context.Set<T>().FindAsync(id);
+        }
     }
 }

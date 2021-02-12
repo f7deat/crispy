@@ -1,8 +1,14 @@
 :root {
+    --default: #e5e7eb;
     --red-600: #DC2626;
 }
+
+*, :after, :before {
+    border: 0 solid var(--default);
+}
+
 a {
-  color: #0366d6;
+    color: #0366d6;
 }
 
 code {
@@ -17,6 +23,14 @@ code {
     background-color: #fff;
 }
 
+.border {
+    border-width: 1px;
+}
+
+.border-b {
+    border-bottom-width: 1px;
+}
+
 .btn-primary {
     color: #fff;
     background-color: #1b6ec2;
@@ -25,6 +39,10 @@ code {
 
 .flex {
     display: flex;
+}
+
+.flex-grow {
+    flex-grow: 1;
 }
 
 .font-bold {
@@ -67,8 +85,24 @@ code {
     margin-bottom: 0.75rem;
 }
 
+.ml-1 {
+    margin-left: 0.25rem;
+}
+
 .ml-2 {
     margin-left: 0.5rem;
+}
+
+.ml-3 {
+    margin-left: 0.75rem;
+}
+
+.ml-4 {
+    margin-left: 1rem;
+}
+
+.mr-1 {
+    margin-right: 0.25rem;
 }
 
 .mr-2 {
@@ -127,6 +161,11 @@ code {
     padding-left: 1rem;
 }
 
+.py-2 {
+    padding-bottom: 0.5rem;
+    padding-top: 0.5rem;
+}
+
 .text-center {
     text-align: center;
 }
@@ -146,18 +185,6 @@ code {
 .text-red-600 {
     color: var(--red-600);
 }
-
-.trigger {
-    font-size: 18px;
-    line-height: 64px;
-    padding: 0 24px;
-    cursor: pointer;
-    transition: color 0.3s;
-}
-
-    .trigger:hover {
-        color: #1890ff;
-    }
 
 .line-through {
     text-decoration: line-through;
