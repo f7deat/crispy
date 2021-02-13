@@ -61,6 +61,9 @@ namespace Crispy.Controllers
         [Route("add"), HttpPost]
         public async Task<IActionResult> Add([FromBody] ApplicationUser user)
         {
+            user.HireDate = DateTime.Now;
+            user.IsEnabled = true;
+            user.Avatar = string.IsNullOrEmpty(user.Avatar) ? "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" : user.Avatar;
             var result = await _userManager.CreateAsync(user);
             return CreatedAtAction(nameof(Add), new { result.Succeeded, result.Errors });
         }

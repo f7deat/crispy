@@ -1,9 +1,9 @@
 ﻿using ApplicationCore.Entities;
 using ApplicationCore.Interfaces.IRepository;
 using Infrastructure.Data;
+using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
-using System.Text;
+using System.Threading.Tasks;
 
 namespace Infrastructure.Repositories
 {
@@ -12,6 +12,18 @@ namespace Infrastructure.Repositories
         public OrderRepository(ApplicationDbContext context) : base(context)
         {
 
+        }
+
+        public async Task<int> CountAsync(OrderType orderType)
+        {
+            try
+            {
+                return await _context.Orders.CountAsync(x => x.OrderType == orderType);
+            }
+            catch (Exception)
+            {
+                return 0;
+            }
         }
     }
 }

@@ -11,5 +11,6 @@ namespace ApplicationCore.Interfaces.IService
         Task<Guid> AddAsync(Cart cart, string userId);
         Task<IEnumerable<Order>> GetListAsync();
         Task<dynamic> RemoveAsync(Guid id);
+        Task<int> CountAsync(OrderType orderType);
     }
 }

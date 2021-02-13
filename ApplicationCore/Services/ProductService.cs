@@ -24,6 +24,11 @@ namespace ApplicationCore.Services
             return _productRepository.AddAsync(product);
         }
 
+        public Task<int> CountAsync()
+        {
+            return _productRepository.CountAsync();
+        }
+
         public async Task<bool> DeleteAsync(Guid id)
         {
             var product = await _productRepository.FindAsync(id);

@@ -1,8 +1,24 @@
-﻿import React from 'react';
+﻿import React, { useState } from 'react';
 import axios from 'axios';
-import { Form, Input, Button, message } from 'antd';
+import { Form, Input, Button, message, Row, Col, Upload } from 'antd';
+import { Link } from 'react-router-dom';
+import {
+    PlusOutlined,
+    RollbackOutlined,
+    LoadingOutlined
+} from '@ant-design/icons';
 
 const AccountAdd = () => {
+
+    const [avatar, setAvatar] = useState('');
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const uploadButton = (
+        <div>
+            {loading ? <LoadingOutlined /> : <PlusOutlined />}
+            <div style={{ marginTop: 8 }}>Chọn ảnh</div>
+        </div>
+    );
 
     const onFinish = (values: any) => {
         axios.post('/api/account/add', values).then(response => {
@@ -15,6 +31,18 @@ const AccountAdd = () => {
             }
         })
     };
+
+    const beforeUpload = (file: any) => {
+        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
+        if (!isJpgOrPng) {
+            message.error('You can only upload JPG/PNG file!');
+        }
+        const isLt2M = file.size / 1024 / 1024 < 2;
+        if (!isLt2M) {
+            message.error('Image must smaller than 2MB!');
+        }
+        return isJpgOrPng && isLt2M;
+    }
 
     return (
         <div className="p-4">
@@ -52,19 +80,37 @@ const AccountAdd = () => {
                         <Input />
                     </Form.Item>
                     <Form.Item
+                        label="Email"
+                        name="email"
+                        rules={[
+                            {
+                                required: true,
+                                message: 'Vui lòng nhập email!',
+                            },
+                        ]}
+                    >
+                        <Input />
+                    </Form.Item>
+                    <Form.Item label="Số điện thoại" name="phoneNumber">
+                        <Input />
+                    </Form.Item>
+                    <Form.Item
                         label="Mật khẩu"
                         name="password"
                         rules={[
                             {
                                 required: true,
-                                message: 'Please input your password!',
+                                message: 'Vui lòng nhập mật khẩu!',
                             },
                         ]}
                     >
                         <Input.Password />
                     </Form.Item>
-                    <Form.Item>
-                        <Button type="primary" htmlType="submit">Tạo tài khoản</Button>
+                    <Form.Item className="mr-4 inline-block">
+                        <Link to="/account-list"><Button icon={<RollbackOutlined />}>Hủy</Button></Link>
+                    </Form.Item>
+                    <Form.Item className="inline-block">
+                        <Button type="primary" htmlType="submit" icon={<PlusOutlined />}>Tạo tài khoản</Button>
                     </Form.Item>
                 </Form>
             </div>

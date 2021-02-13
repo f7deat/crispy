@@ -14,5 +14,6 @@ namespace ApplicationCore.Interfaces.IService
         Task<dynamic> UpdateAsync(Product product);
         Task<dynamic> ExportAsync();
         Task<IEnumerable<Product>> GetByOrderTypeAsync(OrderType orderType);
+        Task<int> CountAsync();
     }
 }

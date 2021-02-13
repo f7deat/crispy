@@ -33,6 +33,11 @@ namespace ApplicationCore.Services
             return data.Id;
         }
 
+        public Task<int> CountAsync(OrderType orderType)
+        {
+            return _orderRepository.CountAsync(orderType);
+        }
+
         public Task<IEnumerable<Order>> GetListAsync() => _orderRepository.ListAllAsync();
 
         public async Task<dynamic> RemoveAsync(Guid id)
