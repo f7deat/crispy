@@ -23,5 +23,7 @@ namespace Identity
         public DateTime DateOfBirth { get; set; }
         [StringLength(20)]
         public string TaxIdentificationNumber { get; set; }
+        public int UserType { get; set; }
+        public int PaidHolidays { get; set; }
     }
 }

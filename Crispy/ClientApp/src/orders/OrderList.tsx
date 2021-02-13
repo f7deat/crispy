@@ -1,5 +1,5 @@
 ﻿import { Button, Table, Tag, Popconfirm, message, DatePicker } from 'antd';
-import React, { useEffect, useState } from "react";
+import * as React from "react";
 import { Link } from 'react-router-dom';
 import { Order } from '../models/entities/Order';
 import axios from 'axios';
@@ -9,6 +9,7 @@ import {
     FileExcelOutlined
 } from '@ant-design/icons';
 import { OrderType } from '../models/OrderModel';
+import { useEffect, useState } from 'react';
 
 const { RangePicker } = DatePicker;
 

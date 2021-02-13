@@ -1,6 +1,7 @@
 ﻿import { Button, Table } from "antd";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import * as React from 'react';
 import { Link } from "react-router-dom";
 import { ProductOrder } from "../models/interfaces/ProductOrder";
 import { IOrderQueueProps } from "../models/props/IOrderProps"

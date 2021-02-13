@@ -42,7 +42,7 @@ const ProductList = () => {
             <div style={{ padding: 8 }}>
                 <Input
                     ref={searchInput}
-                    placeholder={`Search ${dataIndex}`}
+                    placeholder='Nhập từ khóa...'
                     value={selectedKeys[0]}
                     onChange={e => setSelectedKeys(e.target.value ? [e.target.value] : [])}
                     onPressEnter={() => handleSearch(selectedKeys, confirm, dataIndex)}
@@ -60,17 +60,6 @@ const ProductList = () => {
                     </Button>
                     <Button onClick={() => handleReset(clearFilters)} size="small" style={{ width: 90 }}>
                         Hủy
-                    </Button>
-                    <Button
-                        type="link"
-                        size="small"
-                        onClick={() => {
-                            confirm({ closeDropdown: false });
-                            setSearchText(selectedKeys[0]);
-                            setSearchedColumn(dataIndex);
-                        }}
-                    >
-                        Lọc
                     </Button>
                 </Space>
             </div>
@@ -101,7 +90,7 @@ const ProductList = () => {
     const handleDelete = (id) => {
         axios.post(`/api/product/delete/${id}`).then(response => {
             if (response.data) {
-                setProducts(products.filter(x => x.key !== id));
+                setProducts(products.filter(x => x.id !== id));
                 message.info('Xóa thành công!');
             } else {
                 message.error('Xóa thất bại!');

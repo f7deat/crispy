@@ -30,5 +30,7 @@ namespace ApplicationCore.Entities
         public string CreatedBy { get; set; }
         [StringLength(450)]
         public string Modifiedby { get; set; }
+        [StringLength(100)]
+        public string UnitValue { get; set; }
     }
 }

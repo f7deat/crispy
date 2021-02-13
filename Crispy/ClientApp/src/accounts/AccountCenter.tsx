@@ -1,7 +1,8 @@
 ﻿import { Button, Col, Row } from 'antd';
 import { Content } from 'antd/lib/layout/layout';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as React from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { AccountModel } from '../models/AccountModel';
 

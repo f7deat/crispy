@@ -1,7 +1,8 @@
 ﻿import { Alert, Button, Form, Input, message, Tabs } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import * as React from 'react';
 import { useParams } from 'react-router-dom';
 
 const { TabPane } = Tabs;

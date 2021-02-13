@@ -1,5 +1,5 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { Table, Space, Button, Popconfirm, message, Tabs, Col, Row } from 'antd';
+import { Table, Space, Button, Popconfirm, message, Tabs, Col, Row, Empty } from 'antd';
 import { PlusCircleOutlined, DeleteOutlined, FolderOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { VndFormat } from "../helpers/formatHelper";
@@ -106,7 +106,7 @@ const AccountList = () => {
                         <Table columns={columns} dataSource={accounts} rowSelection={rowSelection} pagination={{ pageSize: 5 }} rowKey="id" />
                     </TabPane>
                     <TabPane tab="Đã nghỉ" key="2">
-                        Content of Tab Pane 2
+                        <Empty />
                     </TabPane>
                 </Tabs>
             </div>

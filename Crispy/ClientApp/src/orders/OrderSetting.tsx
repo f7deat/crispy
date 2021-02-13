@@ -1,22 +1,28 @@
-﻿import React, { useEffect, useState } from "react";
+﻿import { useEffect, useState } from "react";
+import * as React from 'react';
 import Title from "antd/lib/typography/Title";
 import { OrderType } from "../models/OrderModel";
 import { IOrderProps } from "../models/props/IOrderProps";
-import { Button, InputNumber, message, Modal, Table } from "antd";
+import { Button, Empty, Input, InputNumber, message, Modal, Select, Table } from "antd";
 import OrderQueue from "./OrderQueue";
 import { ProductOrder } from "../models/interfaces/ProductOrder";
 import { Link } from "react-router-dom";
 import { VndFormat } from "../helpers/formatHelper";
 import {
-    DeleteOutlined
+    DeleteOutlined,
+    SearchOutlined,
+    PlusCircleOutlined
 } from '@ant-design/icons';
 import axios from "axios";
+
+const { Option } = Select;
 
 const OrderSetting = (props: IOrderProps) => {
     const [visible, setVisible] = useState(false);
     const [products, setProducts] = useState<ProductOrder[]>([]);
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
+    const [isModalVisible, setIsModalVisible] = useState(false);
 
     useEffect(() => {
         sumPrice();
@@ -80,12 +86,66 @@ const OrderSetting = (props: IOrderProps) => {
         sumPrice();
     }
 
+    function onChange(value) {
+        console.log(`selected ${value}`);
+    }
+
+    function onBlur() {
+        console.log('blur');
+    }
+
+    function onFocus() {
+        console.log('focus');
+    }
+
+    function onSearch(val) {
+        console.log('search:', val);
+    }
+
+    const showModal = () => {
+        setIsModalVisible(true);
+    };
+
+    const handleOk = () => {
+        setIsModalVisible(false);
+    };
+
+    const handleCancel = () => {
+        setIsModalVisible(false);
+    };
+
     return (
         <div className="p-4">
             <div className="bg-white rounded p-4">
                 <Title level={3}>{props.orderType === OrderType.Import ? 'Nhập kho' : 'Xuất kho'}</Title>
-                <div className="my-4">
-                    <Title level={4} className="mb-2">Danh sách sản phẩm</Title>
+                <div className="mb-4">
+                    <Title level={5}>Khách hàng</Title>
+                    <div className="flex">
+                        <Select
+                            showSearch
+                            placeholder="Chọn khách hàng"
+                            optionFilterProp="children"
+                            onChange={onChange}
+                            onFocus={onFocus}
+                            onBlur={onBlur}
+                            onSearch={onSearch}
+                            filterOption={(input, option) =>
+                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                            }
+                            className="mr-2 w-80"
+                        >
+                            <Option value="jack">Jack</Option>
+                            <Option value="lucy">Lucy</Option>
+                            <Option value="tom">Tom</Option>
+                        </Select>
+                        <Button icon={<PlusCircleOutlined />} type="primary" onClick={showModal}>Thêm mới</Button>
+                        <Modal title="Thêm khách hàng" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>
+                            <Empty />
+                        </Modal>
+                    </div>
+                </div>
+                <div className="mb-4">
+                    <Title level={5} className="mb-2">Danh sách sản phẩm</Title>
                     <div className="text-right mb-2">
                         <Button type="primary" onClick={() => setVisible(true)}>Thêm sản phẩm</Button>
                         <Modal

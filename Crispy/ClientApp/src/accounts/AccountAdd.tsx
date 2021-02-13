@@ -1,4 +1,5 @@
-﻿import React, { useState } from 'react';
+﻿import { useState } from 'react';
+import * as React from 'react';
 import axios from 'axios';
 import { Form, Input, Button, message, Row, Col, Upload } from 'antd';
 import { Link } from 'react-router-dom';
