@@ -1,10 +1,15 @@
 ﻿import React, { useEffect, useState } from 'react';
 import { Table, Space, Button, Popconfirm, message, Tabs, Col, Row, Empty } from 'antd';
-import { PlusCircleOutlined, DeleteOutlined, FolderOutlined } from '@ant-design/icons';
 import { Link } from 'react-router-dom';
 import { VndFormat } from "../helpers/formatHelper";
 import axios from 'axios';
 import Title from 'antd/lib/typography/Title';
+import {
+    PlusCircleOutlined,
+    DeleteOutlined,
+    FolderOutlined,
+    SettingOutlined
+} from '@ant-design/icons';
 
 const { TabPane } = Tabs;
 
@@ -98,7 +103,10 @@ const AccountList = () => {
 
                 <div className="flex justify-between py-2 mb-2">
                     <Title level={4}>Danh sách nhân viên</Title>
-                    <Link to="/account-add"><Button type="primary" icon={<PlusCircleOutlined />}>Thêm nhân viên</Button></Link>
+                    <div>
+                        <Link to="/account-add" className="mr-2"><Button type="primary" icon={<PlusCircleOutlined />}>Thêm nhân viên</Button></Link>
+                        <Link to="/role-list"><Button type="primary" danger icon={<SettingOutlined />}>Quyền</Button></Link>
+                    </div>
                 </div>
 
                 <Tabs defaultActiveKey="1">

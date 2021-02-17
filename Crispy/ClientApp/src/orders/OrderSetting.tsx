@@ -86,7 +86,7 @@ const OrderSetting = (props: IOrderProps) => {
         sumPrice();
     }
 
-    function onChange(value) {
+    function onChange(value: any) {
         console.log(`selected ${value}`);
     }
 
@@ -98,7 +98,7 @@ const OrderSetting = (props: IOrderProps) => {
         console.log('focus');
     }
 
-    function onSearch(val) {
+    function onSearch(val: any) {
         console.log('search:', val);
     }
 
@@ -130,7 +130,7 @@ const OrderSetting = (props: IOrderProps) => {
                             onBlur={onBlur}
                             onSearch={onSearch}
                             filterOption={(input, option) =>
-                                option.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
+                                option?.children.toLowerCase().indexOf(input.toLowerCase()) >= 0
                             }
                             className="mr-2 w-80"
                         >

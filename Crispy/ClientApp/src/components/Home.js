@@ -1,8 +1,9 @@
-﻿import React, { Component, useEffect, useState } from 'react';
+﻿import React, { useEffect, useState } from 'react';
 import { Link, Route, Switch } from 'react-router-dom';
 import AccountCenter from '../accounts/AccountCenter';
 import AccountList from '../accounts/AccountList';
 import AccountAdd from '../accounts/AccountAdd';
+import RoleList from '../roles/RoleList';
 import Dashboard from './Dashboard';
 import { Layout, Menu, Dropdown, Button, Avatar } from 'antd';
 import AccountSetting from '../accounts/AccountSetting';
@@ -132,6 +133,9 @@ const Home = () => {
                     </Route>
                     <Route exact path="/product-list">
                         <ProductList />
+                    </Route>
+                    <Route exact path="/role-list">
+                        <RoleList />
                     </Route>
                     <Route exact path="/account-add">
                         <AccountAdd />

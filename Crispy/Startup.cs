@@ -11,6 +11,7 @@ using ApplicationCore.Interfaces.IService;
 using ApplicationCore.Services;
 using ApplicationCore.Interfaces.IRepository;
 using Infrastructure.Repositories;
+using Microsoft.AspNetCore.Identity;
 
 namespace Crispy
 {
@@ -30,7 +31,9 @@ namespace Crispy
             services.AddControllersWithViews();
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false).AddEntityFrameworkStores<ApplicationDbContext>();
+            services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
+                .AddRoles<ApplicationRole>()
+                .AddEntityFrameworkStores<ApplicationDbContext>();
             services.AddScoped<IProductService, ProductService>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IOrderService, OrderService>();

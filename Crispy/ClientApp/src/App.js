@@ -5,7 +5,6 @@ import Home from './components/Home';
 import axios from 'axios';
 
 export default class App extends Component {
-    static displayName = App.name;
 
     constructor(props) {
         super(props);
