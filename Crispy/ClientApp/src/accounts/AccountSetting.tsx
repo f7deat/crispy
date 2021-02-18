@@ -1,4 +1,4 @@
-﻿import { Alert, Button, Form, Input, message, Tabs } from 'antd';
+﻿import { Alert, Button, Checkbox, Divider, Empty, Form, Input, message, Tabs } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -6,13 +6,18 @@ import * as React from 'react';
 import { useParams } from 'react-router-dom';
 
 const { TabPane } = Tabs;
+const CheckboxGroup = Checkbox.Group;
 
 const AccountSetting = () => {
     const { id } = useParams<any>();
 
+    const plainOptions = ['admin', 'customer', 'employee'];
+    const defaultCheckedList = ['employee'];
+
     const [account, setAccount] = useState<any>({});
     const [fields, setFields] = useState<any>({});
     const [activeTab, setActiveTab] = useState<string>('1');
+    const [checkedList, setCheckedList] = useState(defaultCheckedList);
 
     useEffect(() => {
         axios.get(`/api/account/get/${id || '0'}`).then(response => {
@@ -33,6 +38,10 @@ const AccountSetting = () => {
             ])
         })
     }, [id])
+
+    const onChange = list => {
+        setCheckedList(list);
+    };
 
     const handleUpdate = (values: any) => {
         let url = '/api/account/update';
@@ -65,6 +74,7 @@ const AccountSetting = () => {
             <Tabs tabPosition="left" className="bg-white p-4" onChange={handleChangeTab}>
                 <TabPane tab="Cài đặt chung" key="1">
                     <Title level={3}>Cài đặt chung</Title>
+                    <Divider />
                     <Form layout="vertical" onFinish={handleUpdate} fields={fields}>
                         <Form.Item label="Họ và tên" name="name" rules={[
                             {
@@ -84,6 +94,7 @@ const AccountSetting = () => {
                 </TabPane>
                 <TabPane tab="Cài đặt nâng cao" key="2">
                     <Title level={3}>Cài đặt nâng cao</Title>
+                    <Divider />
                     <Form layout="vertical" onFinish={handleUpdate} fields={fields}>
                         <Form.Item label="Lương" name="salary" >
                             <Input placeholder="Lương" required />
@@ -95,11 +106,18 @@ const AccountSetting = () => {
                 </TabPane>
                 <TabPane tab="Thông báo" key="3">
                     <Title level={3}>Thông báo</Title>
+                    <Divider />
                     <Alert message="Comming soon!" type="info" showIcon />
                 </TabPane>
-                <TabPane tab="Khác" key="4">
+                <TabPane tab="Quyền" key="4">
+                    <Title level={3}>Quyền</Title>
+                    <Divider />
+                    <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
+                </TabPane>
+                <TabPane tab="Khác" key="5">
                     <Title level={3}>Cài đặt khác</Title>
-                    <Alert message="Comming soon!" type="info" showIcon />
+                    <Divider />
+                    <Empty />
                 </TabPane>
             </Tabs>
         </div>

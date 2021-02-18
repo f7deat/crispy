@@ -90,7 +90,11 @@ const Home = () => {
                         </Menu.Item>
                     </SubMenu>
                     <Menu.Item key="5" icon={<UserOutlined />}><Link to="/customer-list" />Khách hàng</Menu.Item>
-                    <Menu.Item key="6" icon={<SettingOutlined />}><Link to="/setting" />Cài đặt</Menu.Item>
+                    <SubMenu key="sub2" icon={<SettingOutlined />} title="Cài đặt">
+                        <Menu.Item key="6">
+                            <Link to="/role-list">Quyền</Link>
+                        </Menu.Item>
+                    </SubMenu>
                 </Menu>
             </Sider>
             <Layout>

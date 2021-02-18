@@ -1,4 +1,6 @@
-﻿using Identity;
+﻿using ApplicationCore.Constants;
+using Crispy.Models.Accounts;
+using Identity;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -66,6 +68,17 @@ namespace Crispy.Controllers
             user.Avatar = string.IsNullOrEmpty(user.Avatar) ? "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" : user.Avatar;
             var result = await _userManager.CreateAsync(user);
             return CreatedAtAction(nameof(Add), new { result.Succeeded, result.Errors });
+        }
+
+        [Route("get-customer")]
+        public async Task<IActionResult> GetCustomer() => Ok(await _userManager.GetUsersInRoleAsync(CRole.CUSTOMER));
+
+        [Route("add-to-roles"), HttpPost]
+        public async Task<IActionResult> AddToRoles([FromForm]AddToRole addToRole)
+        {
+            var user = await _userManager.FindByIdAsync(addToRole.Id);
+            var result = await _userManager.AddToRolesAsync(user, addToRole.Roles);
+            return Ok(new { result.Succeeded, result.Errors });
         }
     }
 }

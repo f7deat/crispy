@@ -28,5 +28,18 @@ namespace Crispy.Controllers
             var result = await _roleManager.CreateAsync(role);
             return Ok(new { result.Succeeded, result.Errors });
         }
+
+        [Route("delete/{id}"), HttpPost]
+        public async Task<IActionResult> Delete([FromRoute]string id)
+        {
+            var role = await _roleManager.FindByIdAsync(id);
+            var result = await _roleManager.DeleteAsync(role);
+            return Ok(new { result.Succeeded, result.Errors });
+        }
+
+        public async Task<IActionResult> AsignTo()
+        {
+            var result = await _roleManager.
+        }
     }
 }
