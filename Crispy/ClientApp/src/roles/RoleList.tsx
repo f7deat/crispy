@@ -47,7 +47,7 @@ const RoleList = () => {
     const handleDelete = (id: string) => {
         axios.post(`/api/role/delete/${id}`).then(response => {
             if (response.data.succeeded) {
-                setRoles(roles.filter(x => x.id !== id));
+                setRoles(roles?.filter(x => x.id !== id));
                 message.info('Xóa thành công!');
             } else {
                 response.data.errors.forEach((value: TanError) => {
@@ -61,7 +61,7 @@ const RoleList = () => {
         {
             title: 'Quyền',
             dataIndex: 'name',
-            render: (text, record) => <Link to={`/role-setting/${record.id}`}>{text}</Link>,
+            render: (text: string, record: Role) => <Link to={`/role-setting/${record.id}`}>{text}</Link>,
         },
         {
             title: 'Normalized Name',
@@ -69,7 +69,7 @@ const RoleList = () => {
         },
         {
             title: 'Tác vụ',
-            render: (text, record) => (
+            render: (text: string, record: Role) => (
                 <Space size="small">
                     <Link to={`/account-setting/${record.id}`}>
                         <Button type="primary" icon={<FolderOutlined />}></Button>

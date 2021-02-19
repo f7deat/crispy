@@ -60,23 +60,28 @@ namespace Crispy.Controllers
             return Ok(new { result.Succeeded, result.Errors });
         }
 
-        [Route("add"), HttpPost]
-        public async Task<IActionResult> Add([FromBody] ApplicationUser user)
+        [Route("add/{role}"), HttpPost]
+        public async Task<IActionResult> Add([FromBody] ApplicationUser user, [FromRoute]string role)
         {
             user.HireDate = DateTime.Now;
             user.IsEnabled = true;
-            user.Avatar = string.IsNullOrEmpty(user.Avatar) ? "https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png" : user.Avatar;
             var result = await _userManager.CreateAsync(user);
+            if (result.Succeeded)
+            {
+                await _userManager.AddToRoleAsync(user, role);
+            }
             return CreatedAtAction(nameof(Add), new { result.Succeeded, result.Errors });
         }
 
-        [Route("get-customer")]
-        public async Task<IActionResult> GetCustomer() => Ok(await _userManager.GetUsersInRoleAsync(CRole.CUSTOMER));
+        [Route("get-list-customer")]
+        public async Task<IActionResult> GetListCustomer() => Ok(await _userManager.GetUsersInRoleAsync(CRole.CUSTOMER));
 
         [Route("add-to-roles"), HttpPost]
-        public async Task<IActionResult> AddToRoles([FromForm]AddToRole addToRole)
+        public async Task<IActionResult> AddToRoles([FromBody] AddToRole addToRole)
         {
             var user = await _userManager.FindByIdAsync(addToRole.Id);
+            var roles = await _userManager.GetRolesAsync(user);
+            await _userManager.RemoveFromRolesAsync(user, roles);
             var result = await _userManager.AddToRolesAsync(user, addToRole.Roles);
             return Ok(new { result.Succeeded, result.Errors });
         }

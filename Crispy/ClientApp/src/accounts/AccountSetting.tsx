@@ -4,6 +4,9 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 import { useParams } from 'react-router-dom';
+import { CheckboxValueType } from 'antd/lib/checkbox/Group';
+import { SaveOutlined } from '@ant-design/icons';
+import { TanError } from '../models/interfaces/tanResponse';
 
 const { TabPane } = Tabs;
 const CheckboxGroup = Checkbox.Group;
@@ -17,7 +20,7 @@ const AccountSetting = () => {
     const [account, setAccount] = useState<any>({});
     const [fields, setFields] = useState<any>({});
     const [activeTab, setActiveTab] = useState<string>('1');
-    const [checkedList, setCheckedList] = useState(defaultCheckedList);
+    const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList);
 
     useEffect(() => {
         axios.get(`/api/account/get/${id || '0'}`).then(response => {
@@ -39,7 +42,7 @@ const AccountSetting = () => {
         })
     }, [id])
 
-    const onChange = list => {
+    const onChange = (list: CheckboxValueType[]) => {
         setCheckedList(list);
     };
 
@@ -69,6 +72,21 @@ const AccountSetting = () => {
         setActiveTab(tabIndex);
     }
 
+    const addToRoles = () => {
+        axios.post('/api/account/add-to-roles', {
+            id: id,
+            roles: checkedList
+        }).then(response => {
+            if (response.data.succeeded) {
+                message.info('Lưu thành công!');
+            } else {
+                response.data.errors.forEach((value: TanError) => {
+                    message.error(value.description);
+                })
+            }
+        })
+    }
+
     return (
         <div className="p-4">
             <Tabs tabPosition="left" className="bg-white p-4" onChange={handleChangeTab}>
@@ -85,7 +103,7 @@ const AccountSetting = () => {
                             <Input placeholder="Họ và tên" />
                         </Form.Item>
                         <Form.Item label="Số điện thoại" name="phoneNumber">
-                            <Input placeholder="Số điện thoại"/>
+                            <Input placeholder="Số điện thoại" />
                         </Form.Item>
                         <Form.Item>
                             <Button type="primary" htmlType="submit">Cập nhật thông tin</Button>
@@ -113,6 +131,9 @@ const AccountSetting = () => {
                     <Title level={3}>Quyền</Title>
                     <Divider />
                     <CheckboxGroup options={plainOptions} value={checkedList} onChange={onChange} />
+                    <div className="mt-3">
+                        <Button type="primary" onClick={addToRoles} icon={<SaveOutlined />}> Cập nhật</Button>
+                    </div>
                 </TabPane>
                 <TabPane tab="Khác" key="5">
                     <Title level={3}>Cài đặt khác</Title>

@@ -22,7 +22,7 @@ const AccountAdd = () => {
     );
 
     const onFinish = (values: any) => {
-        axios.post('/api/account/add', values).then(response => {
+        axios.post(`/api/account/add/employee`, values).then(response => {
             if (response.data.succeeded) {
                 message.success('Tạo tài khoản thành công!');
             } else {
