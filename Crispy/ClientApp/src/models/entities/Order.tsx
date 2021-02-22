@@ -5,4 +5,5 @@ export interface Order {
     orderType: OrderType;
     createdDate: Date;
     createdBy: string;
+    customerName: string;
 }

@@ -104,7 +104,7 @@ const AccountList = () => {
                 <div className="flex justify-between py-2 mb-2">
                     <Title level={4}>Danh sách nhân viên</Title>
                     <div>
-                        <Link to="/account-add" className="mr-2"><Button type="primary" icon={<PlusCircleOutlined />}>Thêm nhân viên</Button></Link>
+                        <Link to="/account-add/employee" className="mr-2"><Button type="primary" icon={<PlusCircleOutlined />}>Thêm nhân viên</Button></Link>
                         <Link to="/role-list"><Button type="primary" danger icon={<SettingOutlined />}>Quyền</Button></Link>
                     </div>
                 </div>

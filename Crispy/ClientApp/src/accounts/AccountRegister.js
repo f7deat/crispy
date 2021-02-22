@@ -8,14 +8,14 @@ import {
     GoogleCircleFilled
 } from '@ant-design/icons';
 
-const AccountRegister = ({ authenticated }) => {
+const AccountRegister = ({ setAuthenticated }) => {
 
     const onFinish = (values) => {
         axios.post('/home/register', values).then(response => {
             if (response.data.succeeded) {
                 axios.post('/home/login', values).then(response => {
                     if (response.succeeded) {
-                        authenticated(true);
+                        setAuthenticated(true);
                     }
                 })
             } else {

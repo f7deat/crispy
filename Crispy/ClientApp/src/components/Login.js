@@ -1,5 +1,5 @@
 ﻿import React from 'react';
-import { Form, Input, Button, Checkbox, Tabs } from 'antd';
+import { Form, Input, Button, Checkbox, Tabs, message } from 'antd';
 import Layout, { Content, Footer } from 'antd/lib/layout/layout';
 import AccountRegister from '../accounts/AccountRegister';
 import axios from 'axios';
@@ -14,23 +14,18 @@ import {
 
 const { TabPane } = Tabs;
 
-const Login = ({ authenticated }) => {
+const Login = ({ setAuthenticated }) => {
 
     const onFinish = (values) => {
         axios.post('/home/login', values).then(response => {
-            if (response.succeeded) {
-                authenticated(true);
+            if (response.data.succeeded) {
+                setAuthenticated(true);
             }
         })
     };
 
-    const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-        axios.post('/home/login').then(response => {
-            if (response.data) {
-                authenticated(true);
-            }
-        })
+    const onFinishFailed = () => {
+        message.error('Sai tên đăng nhập hoặc mật khẩu!');
     };
 
     const switchTab = (key) => {
@@ -98,7 +93,7 @@ const Login = ({ authenticated }) => {
                         </Form>
                     </TabPane>
                     <TabPane tab="Đăng ký" key="2">
-                        <AccountRegister authenticated={authenticated}/>
+                        <AccountRegister setAuthenticated={setAuthenticated}/>
                     </TabPane>
                 </Tabs>
 

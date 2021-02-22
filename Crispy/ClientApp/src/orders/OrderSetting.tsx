@@ -10,7 +10,6 @@ import { Link } from "react-router-dom";
 import { VndFormat } from "../helpers/formatHelper";
 import {
     DeleteOutlined,
-    SearchOutlined,
     PlusCircleOutlined
 } from '@ant-design/icons';
 import axios from "axios";
@@ -23,11 +22,18 @@ const OrderSetting = (props: IOrderProps) => {
     const [selectedRowKeys, setSelectedRowKeys] = useState([]);
     const [totalPrice, setTotalPrice] = useState(0);
     const [isModalVisible, setIsModalVisible] = useState(false);
+    const [customers, setCustomers] = useState([]);
+    const [selectedCustomer, setSelectedCustomer] = useState('');
 
     useEffect(() => {
         sumPrice();
-        console.log(totalPrice)
     })
+
+    useEffect(() => {
+        axios.get('/api/account/get-list-customer').then(response => {
+            setCustomers(response.data);
+        })
+    }, [])
 
     function sumPrice() {
         setTotalPrice(products.reduce((a, b) => a + (b['price'] || 0), 0));
@@ -64,8 +70,13 @@ const OrderSetting = (props: IOrderProps) => {
     ]
 
     const handleConfirm = () => {
+        if (!selectedCustomer) {
+            message.error('Vui lòng chọn khách hàng!');
+            return;
+        }
         if (products.length > 0) {
             axios.post('/api/order/add-to-cart', {
+                customerId: selectedCustomer,
                 orderType: props.orderType,
                 cartItems: products
             }).then(response => {
@@ -86,8 +97,9 @@ const OrderSetting = (props: IOrderProps) => {
         sumPrice();
     }
 
-    function onChange(value: any) {
-        console.log(`selected ${value}`);
+    function onChange(value: string) {
+        // dropdown customer
+        setSelectedCustomer(value)
     }
 
     function onBlur() {
@@ -134,9 +146,9 @@ const OrderSetting = (props: IOrderProps) => {
                             }
                             className="mr-2 w-80"
                         >
-                            <Option value="jack">Jack</Option>
-                            <Option value="lucy">Lucy</Option>
-                            <Option value="tom">Tom</Option>
+                            {
+                                customers.map((customer: any) => <Option value={customer.id} key={customer.id}>{customer.name}</Option>)
+                            }
                         </Select>
                         <Button icon={<PlusCircleOutlined />} type="primary" onClick={showModal}>Thêm mới</Button>
                         <Modal title="Thêm khách hàng" visible={isModalVisible} onOk={handleOk} onCancel={handleCancel}>

@@ -3,7 +3,6 @@ using ApplicationCore.Interfaces.IRepository;
 using ApplicationCore.Interfaces.IService;
 using ApplicationCore.Models;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace ApplicationCore.Services
@@ -38,7 +37,7 @@ namespace ApplicationCore.Services
             return _orderRepository.CountAsync(orderType);
         }
 
-        public Task<IEnumerable<Order>> GetListAsync() => _orderRepository.ListAllAsync();
+        public Task<dynamic> GetListAsync() => _orderRepository.GetListAsync();
 
         public async Task<dynamic> RemoveAsync(Guid id)
         {

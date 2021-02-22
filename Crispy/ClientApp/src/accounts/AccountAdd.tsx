@@ -1,28 +1,23 @@
 ﻿import { useState } from 'react';
 import * as React from 'react';
 import axios from 'axios';
-import { Form, Input, Button, message, Row, Col, Upload } from 'antd';
-import { Link } from 'react-router-dom';
+import { Form, Input, Button, message } from 'antd';
+import { Link, useParams } from 'react-router-dom';
 import {
     PlusOutlined,
-    RollbackOutlined,
-    LoadingOutlined
+    RollbackOutlined
 } from '@ant-design/icons';
 
 const AccountAdd = () => {
 
-    const [avatar, setAvatar] = useState('');
-    const [loading, setLoading] = useState<boolean>(false)
-
-    const uploadButton = (
-        <div>
-            {loading ? <LoadingOutlined /> : <PlusOutlined />}
-            <div style={{ marginTop: 8 }}>Chọn ảnh</div>
-        </div>
-    );
+    const { role } = useParams<any>( );
 
     const onFinish = (values: any) => {
-        axios.post(`/api/account/add/employee`, values).then(response => {
+        if (!role) {
+            message.error('Không tìm thấy vai trò người dùng!');
+            return;
+        }
+        axios.post(`/api/account/add/${role}`, values).then(response => {
             if (response.data.succeeded) {
                 message.success('Tạo tài khoản thành công!');
             } else {
@@ -32,18 +27,6 @@ const AccountAdd = () => {
             }
         })
     };
-
-    const beforeUpload = (file: any) => {
-        const isJpgOrPng = file.type === 'image/jpeg' || file.type === 'image/png';
-        if (!isJpgOrPng) {
-            message.error('You can only upload JPG/PNG file!');
-        }
-        const isLt2M = file.size / 1024 / 1024 < 2;
-        if (!isLt2M) {
-            message.error('Image must smaller than 2MB!');
-        }
-        return isJpgOrPng && isLt2M;
-    }
 
     return (
         <div className="p-4">

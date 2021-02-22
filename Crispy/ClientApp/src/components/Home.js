@@ -24,7 +24,8 @@ import {
     InboxOutlined,
     ToolOutlined,
     FileImageOutlined,
-    SettingOutlined
+    SettingOutlined,
+    QuestionCircleOutlined
 } from '@ant-design/icons';
 import { OrderType } from '../models/OrderModel';
 
@@ -42,7 +43,7 @@ const lang = (
     </Menu>
 )
 
-const Home = () => {
+const Home = ({ setAuthenticated }) => {
 
     const [collapsed, setCollapsed] = useState(false)
     const [account, setAccount] = useState({})
@@ -62,9 +63,9 @@ const Home = () => {
             <Menu.Item>
                 <Link to="/account-center"><UserOutlined /> Hồ sơ</Link>
             </Menu.Item>
-            <Menu.Item danger onClick={() => this.props.authenticated(false)}>
+            <Menu.Item danger onClick={() => setAuthenticated(false)}>
                 <LogoutOutlined /> Đăng xuất
-                </Menu.Item>
+            </Menu.Item>
         </Menu>
     )
 
@@ -117,6 +118,7 @@ const Home = () => {
                         <Dropdown overlay={lang}>
                             <Button type="text" icon={<TranslationOutlined />}></Button>
                         </Dropdown>
+                        <Button type="text"><a href="https://def-zone.github.io/sturdy-carnival/#/" target="_blank" rel="noopener noreferrer"><QuestionCircleOutlined /></a></Button>
                     </div>
                 </Header>
                 <Switch>
@@ -141,7 +143,7 @@ const Home = () => {
                     <Route exact path="/role-list">
                         <RoleList />
                     </Route>
-                    <Route exact path="/account-add">
+                    <Route exact path="/account-add/:role">
                         <AccountAdd />
                     </Route>
                     <Route path="/account-setting/:id?">

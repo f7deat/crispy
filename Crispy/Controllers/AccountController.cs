@@ -22,9 +22,9 @@ namespace Crispy.Controllers
         }
 
         [Route("get-list-account")]
-        public IActionResult GetListAccount()
+        public async Task<IActionResult> GetListAccount()
         {
-            return Ok(_userManager.Users.Where(x => x.LockoutEnd == null).ToList());
+            return Ok(await _userManager.GetUsersInRoleAsync(CRole.EMPLOYEE));
         }
 
         [Route("get/{id}")]
@@ -40,6 +40,8 @@ namespace Crispy.Controllers
             var data = await _userManager.FindByIdAsync(user.Id);
             data.Name = user.Name;
             data.PhoneNumber = user.PhoneNumber;
+            data.DateOfBirth = user.DateOfBirth;
+            data.HireDate = user.HireDate;
             var result = await _userManager.UpdateAsync(data);
             return Ok(new { result.Succeeded, result.Errors });
         }

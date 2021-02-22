@@ -46,12 +46,12 @@ const OrderList = () => {
 
     const columns = [
         {
-            title: 'id',
-            dataIndex: 'id',
-            render: (text: string, record: Order) => <Link to={`/product-setting/${record.id}`}>{text}</Link>,
+            title: 'Khách hàng',
+            dataIndex: 'customerName',
+            render: (text: string, record: Order) => <Link to={`/product-setting/${record.id}`}>{text}</Link>
         },
         {
-            title: 'Ngày tạo',
+            title: 'Ngày',
             dataIndex: 'createdDate'
         },
         {
