@@ -1,4 +1,4 @@
-﻿import { Button, Table, Tag, Popconfirm, message, DatePicker } from 'antd';
+﻿import { Button, Table, Tag, Popconfirm, message, DatePicker, Space } from 'antd';
 import * as React from "react";
 import { Link } from 'react-router-dom';
 import { Order } from '../models/entities/Order';
@@ -78,6 +78,14 @@ const OrderList = () => {
 
     return (
         <div className="p-4">
+            <Space>
+                <div className="p-4 bg-white">
+                    Tổng đơn xuất: {orders?.filter(x => x.orderType === OrderType.Export).length}
+                </div>
+                <div className="p-4 bg-white">
+                    Tổng đơn nhập: {orders?.filter(x => x.orderType === OrderType.Import).length}
+                </div>
+            </Space>
             <div className="text-right mb-3">
                 <RangePicker format="YYYY-MM-DD" onChange={() => setDisabledExport(false)} />
                 <Button className="mr-2" disabled={disabledExport} onClick={() => setDisabledExport(true)}><FileExcelOutlined /> Xuất báo cáo</Button>

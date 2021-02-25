@@ -1,4 +1,4 @@
-﻿import { Button, Input, message, Modal, Space, Table } from "antd";
+﻿import { Button, Drawer, Input, message, Modal, Space, Table } from "antd";
 import axios from "axios";
 import * as React from "react";
 import { useEffect, useState } from "react";
@@ -16,6 +16,7 @@ const RoleList = () => {
     const [roles, setRoles] = useState<Role[]>()
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [roleName, setRoleName] = useState('');
+    const [visible, setVisible] = useState(false);
 
     useEffect(() => {
         axios.get('/api/role/get-list').then(response => {
@@ -71,9 +72,7 @@ const RoleList = () => {
             title: 'Tác vụ',
             render: (text: string, record: Role) => (
                 <Space size="small">
-                    <Link to={`/account-setting/${record.id}`}>
-                        <Button type="primary" icon={<FolderOutlined />}></Button>
-                    </Link>
+                    <Button type="primary" icon={<FolderOutlined />} onClick={() => setVisible(!visible)}></Button>
                     <Button type="primary" danger disabled icon={<DeleteOutlined />} onClick={() => handleDelete(record.id)}></Button>
                 </Space>
             ),
@@ -92,6 +91,19 @@ const RoleList = () => {
             <div className="p-4 bg-white">
                 <Table columns={columns} dataSource={roles} pagination={{ pageSize: 5 }} rowKey="id" />
             </div>
+
+            <Drawer
+                title="Danh sách tài khoản"
+                placement="right"
+                closable={false}
+                onClose={() => setVisible(false)}
+                visible={visible}
+                width={720}
+            >
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+                <p>Some contents...</p>
+            </Drawer>
         </div>
     )
 }

@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { SaveOutlined } from '@ant-design/icons';
 import { TanError } from '../models/interfaces/tanResponse';
-import * as moment from 'moment';
+import moment from 'moment';
 
 const { TabPane } = Tabs;
 const CheckboxGroup = Checkbox.Group;
@@ -89,7 +89,7 @@ const AccountSetting = () => {
         })
     }
 
-    function handleChangeDate(dateString, type) {
+    function handleChangeDate(dateString: string, type: number) {
         switch (type) {
             case 1:
                 account.dateOfBirth = dateString

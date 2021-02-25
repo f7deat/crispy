@@ -189,7 +189,9 @@ const OrderSetting = (props: IOrderProps) => {
                     </div>
                 </div>
                 <div className="text-right">
-                    <Button className="mr-2">Hủy</Button>
+                    <Link to="/order-list">
+                        <Button className="mr-2">Hủy</Button>
+                    </Link>
                     <Button type="primary" danger={props.orderType === OrderType.Import} onClick={handleConfirm}>Xác nhận</Button>
                 </div>
             </div>

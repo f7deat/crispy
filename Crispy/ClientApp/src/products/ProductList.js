@@ -3,6 +3,7 @@ import { Button, message, Popconfirm, Space, Table, Input } from 'antd';
 import Highlighter from 'react-highlight-words';
 import { Link } from 'react-router-dom';
 import axios from 'axios';
+import moment from 'moment';
 import {
     PlusCircleOutlined,
     DeleteOutlined,
@@ -120,7 +121,8 @@ const ProductList = () => {
         },
         {
             title: 'Ngày cập nhật',
-            dataIndex: 'modifiedDate'
+            dataIndex: 'modifiedDate',
+            render: (text) => moment(text).format('DD/MM/YYYY HH:mm')
         },
         {
             title: 'Action',

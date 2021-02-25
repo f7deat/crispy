@@ -25,7 +25,7 @@ export const AccountTable = (props: any) =>
         });
     }
 
-    const onSelectChange = (e) => {
+    const onSelectChange = (e: any) => {
         setSelectedRowKeys(e)
         console.log(e)
     }
