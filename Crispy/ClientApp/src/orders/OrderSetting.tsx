@@ -3,7 +3,7 @@ import * as React from 'react';
 import Title from "antd/lib/typography/Title";
 import { OrderType } from "../models/OrderModel";
 import { IOrderProps } from "../models/props/IOrderProps";
-import { Button, Empty, Input, InputNumber, message, Modal, Select, Table } from "antd";
+import { Button, Empty, InputNumber, message, Modal, Select, Table } from "antd";
 import OrderQueue from "./OrderQueue";
 import { ProductOrder } from "../models/interfaces/ProductOrder";
 import { Link } from "react-router-dom";

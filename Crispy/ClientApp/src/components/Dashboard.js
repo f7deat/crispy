@@ -7,6 +7,7 @@ import {
     InfoCircleOutlined
 } from '@ant-design/icons';
 import { OrderType } from '../models/OrderModel';
+import { Analysis } from '../dashboards/Analysis';
 
 const Dashboard = () => {
 
@@ -24,7 +25,7 @@ const Dashboard = () => {
 
     return (
         <Content className="p-4">
-            <Row gutter={16}>
+            <Row gutter={16} className="mb-4">
                 <Col span={6}>
                     <Card title="Nhân viên" bordered={false} extra={<Link to="/account-list"><InfoCircleOutlined /></Link>}>
                         {totalEployee}
@@ -46,6 +47,9 @@ const Dashboard = () => {
                     </Card>
                 </Col>
             </Row>
+            <div className="bg-white mb-4 p-4">
+                <Analysis/>
+            </div>
         </Content>
     )
 }

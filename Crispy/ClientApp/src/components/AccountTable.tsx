@@ -3,7 +3,8 @@ import * as React from 'react';
 import { Link } from 'react-router-dom';
 import {
     FolderOutlined,
-    DeleteOutlined
+    DeleteOutlined,
+    EditOutlined
 } from '@ant-design/icons';
 import { useState } from 'react';
 import axios from 'axios';
@@ -53,8 +54,11 @@ export const AccountTable = (props: any) =>
             title: 'Action',
             render: (text: string, record: any) => (
                 <Space size="small">
-                    <Link to={`/account-setting/${record.id}`}>
+                    <Link to={`/account-center/${record.id}`}>
                         <Button type="primary" icon={<FolderOutlined />}></Button>
+                    </Link>
+                    <Link to={`/account-setting/${record.id}`}>
+                        <Button icon={<EditOutlined />}></Button>
                     </Link>
                     <Popconfirm title="Bạn có chắc chắn muốn xóa?"
                         onConfirm={() => handleRemove(record.id)}

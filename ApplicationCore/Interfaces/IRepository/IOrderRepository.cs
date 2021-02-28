@@ -7,5 +7,6 @@ namespace ApplicationCore.Interfaces.IRepository
     {
         Task<int> CountAsync(OrderType orderType);
         Task<dynamic> GetListAsync();
+        Task<dynamic> GetOrdersInUserAsync(string id);
     }
 }

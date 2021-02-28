@@ -37,7 +37,14 @@ namespace ApplicationCore.Services
             return _orderRepository.CountAsync(orderType);
         }
 
+        public Task<Order> GetAsync(Guid id)
+        {
+            return _orderRepository.GetByIdAsync(id);
+        }
+
         public Task<dynamic> GetListAsync() => _orderRepository.GetListAsync();
+
+        public Task<dynamic> GetOrdersInUserAsync(string id) => _orderRepository.GetOrdersInUserAsync(id);
 
         public async Task<dynamic> RemoveAsync(Guid id)
         {

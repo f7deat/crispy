@@ -49,5 +49,9 @@ namespace Crispy.Controllers
 
         [Route("delete/{id}"), HttpPost]
         public async Task<IActionResult> Delete([FromRoute] Guid id) => Ok(await _orderService.RemoveAsync(id));
+        [Route("get-orders-in-user/{id}")]
+        public async Task<IActionResult> GetOrdersInUserAsync(string id) => Ok(await _orderService.GetOrdersInUserAsync(id));
+        [Route("get/{id}")]
+        public async Task<IActionResult> GetAsync(Guid id) => Ok(await _orderService.GetAsync(id));
     }
 }

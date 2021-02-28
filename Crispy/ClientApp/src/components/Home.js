@@ -1,17 +1,6 @@
 ﻿import React, { useEffect, useState } from 'react';
-import { Link, Route, Switch } from 'react-router-dom';
-import AccountCenter from '../accounts/AccountCenter';
-import AccountList from '../accounts/AccountList';
-import AccountAdd from '../accounts/AccountAdd';
-import RoleList from '../roles/RoleList';
-import Dashboard from './Dashboard';
+import { Link } from 'react-router-dom';
 import { Layout, Menu, Dropdown, Button, Avatar } from 'antd';
-import AccountSetting from '../accounts/AccountSetting';
-import ProductList from '../products/ProductList';
-import ProductSetting from '../products/ProductSetting';
-import OrderList from '../orders/OrderList';
-import OrderSetting from '../orders/OrderSetting';
-import CustomerList from '../customers/CustomerList';
 import axios from 'axios';
 import {
     MenuUnfoldOutlined,
@@ -27,7 +16,7 @@ import {
     SettingOutlined,
     QuestionCircleOutlined
 } from '@ant-design/icons';
-import { OrderType } from '../models/OrderModel';
+import { AppRouter } from '../app-router';
 
 const { Sider, Header } = Layout;
 const { SubMenu } = Menu;
@@ -121,44 +110,7 @@ const Home = ({ setAuthenticated }) => {
                         <Button type="text"><a href="https://def-zone.github.io/sturdy-carnival/#/" target="_blank" rel="noopener noreferrer"><QuestionCircleOutlined /></a></Button>
                     </div>
                 </Header>
-                <Switch>
-                    <Route exact path="/customer-list">
-                        <CustomerList />
-                    </Route>
-                    <Route exact path="/order-setting/export">
-                        <OrderSetting orderType={OrderType.Export} />
-                    </Route>
-                    <Route exact path="/order-setting/import">
-                        <OrderSetting orderType={OrderType.Import} />
-                    </Route>
-                    <Route exact path="/order-list">
-                        <OrderList />
-                    </Route>
-                    <Route exact path="/product-setting/:id?">
-                        <ProductSetting />
-                    </Route>
-                    <Route exact path="/product-list">
-                        <ProductList />
-                    </Route>
-                    <Route exact path="/role-list">
-                        <RoleList />
-                    </Route>
-                    <Route exact path="/account-add/:role">
-                        <AccountAdd />
-                    </Route>
-                    <Route path="/account-setting/:id?">
-                        <AccountSetting />
-                    </Route>
-                    <Route exact path="/account-list">
-                        <AccountList />
-                    </Route>
-                    <Route exact path="/account-center">
-                        <AccountCenter />
-                    </Route>
-                    <Route exact path="/">
-                        <Dashboard />
-                    </Route>
-                </Switch>
+                <AppRouter/>
             </Layout>
         </Layout>
     )

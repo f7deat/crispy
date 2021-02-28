@@ -44,5 +44,7 @@ namespace Infrastructure.Repositories
                         };
             return await query.ToListAsync();
         }
+
+        public async Task<dynamic> GetOrdersInUserAsync(string id) => await _context.Orders.Where(x => x.CustomerId == id).OrderByDescending(x => x.ModifiedDate).ToListAsync();
     }
 }

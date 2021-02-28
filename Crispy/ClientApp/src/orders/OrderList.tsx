@@ -6,7 +6,8 @@ import axios from 'axios';
 import {
     PlusCircleOutlined,
     DeleteOutlined,
-    FileExcelOutlined
+    FileExcelOutlined,
+    FolderOutlined
 } from '@ant-design/icons';
 import { OrderType } from '../models/OrderModel';
 import { useEffect, useState } from 'react';
@@ -64,14 +65,19 @@ const OrderList = () => {
         {
             title: 'Tác vụ',
             render: (record: Order) => (
-                <Popconfirm
-                    title="Bạn có chắc chắn muốn xóa?"
-                    onConfirm={() => remove(record.id)}
-                    okText="Xác nhận"
-                    cancelText="Hủy"
-                >
-                    <Button type="primary" danger icon={<DeleteOutlined />}></Button>
-                </Popconfirm>
+                <Space>
+                    <Link to={`/invoice/${record.id}`}>
+                        <Button type="primary" icon={<FolderOutlined />}></Button>
+                    </Link>
+                    <Popconfirm
+                        title="Bạn có chắc chắn muốn xóa?"
+                        onConfirm={() => remove(record.id)}
+                        okText="Xác nhận"
+                        cancelText="Hủy"
+                    >
+                        <Button type="primary" danger icon={<DeleteOutlined />}></Button>
+                    </Popconfirm>
+                </Space>
             )
         }
     ]

@@ -77,6 +77,8 @@ namespace Crispy.Controllers
 
         [Route("get-list-customer")]
         public async Task<IActionResult> GetListCustomer() => Ok(await _userManager.GetUsersInRoleAsync(CRole.CUSTOMER));
+        [Route("get-users-in-role/{role}")]
+        public async Task<IActionResult> GetUsersInRoleAsync(string role) => Ok(await _userManager.GetUsersInRoleAsync(role));
 
         [Route("add-to-roles"), HttpPost]
         public async Task<IActionResult> AddToRoles([FromBody] AddToRole addToRole)
@@ -86,6 +88,13 @@ namespace Crispy.Controllers
             await _userManager.RemoveFromRolesAsync(user, roles);
             var result = await _userManager.AddToRolesAsync(user, addToRole.Roles);
             return Ok(new { result.Succeeded, result.Errors });
+        }
+
+        [Route("get-top-customers-spending")]
+        public async Task<IActionResult> GetTopCustomersSpending()
+        {
+            var customers = await _userManager.GetUsersInRoleAsync(CRole.CUSTOMER);
+            return Ok(customers.OrderByDescending(x => x.Salary).Take(6));
         }
     }
 }

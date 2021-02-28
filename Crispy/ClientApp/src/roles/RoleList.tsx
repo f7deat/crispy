@@ -17,6 +17,7 @@ const RoleList = () => {
     const [isModalVisible, setIsModalVisible] = useState(false);
     const [roleName, setRoleName] = useState('');
     const [visible, setVisible] = useState(false);
+    const [users, setUsers] = useState<any>();
 
     useEffect(() => {
         axios.get('/api/role/get-list').then(response => {
@@ -58,6 +59,13 @@ const RoleList = () => {
         })
     }
 
+    function drawUser(name: string) {
+        axios.get(`/api/account/get-users-in-role/${name}`).then(response => {
+            setUsers(response.data);
+        })
+        setVisible(!visible)
+    }
+
     const columns = [
         {
             title: 'Quyền',
@@ -72,12 +80,28 @@ const RoleList = () => {
             title: 'Tác vụ',
             render: (text: string, record: Role) => (
                 <Space size="small">
-                    <Button type="primary" icon={<FolderOutlined />} onClick={() => setVisible(!visible)}></Button>
+                    <Button type="primary" icon={<FolderOutlined />} onClick={() => drawUser(record.name)}></Button>
                     <Button type="primary" danger disabled icon={<DeleteOutlined />} onClick={() => handleDelete(record.id)}></Button>
                 </Space>
             ),
         },
     ];
+
+    const userColumns = [
+        {
+            title: 'Name',
+            dataIndex: 'name'
+        },
+        {
+            title: 'Tác vụ',
+            render: (text: string, record: any) => (
+                <Space size="small">
+                    <Button type="primary" icon={<FolderOutlined />}></Button>
+                    <Button type="primary" danger disabled icon={<DeleteOutlined />}></Button>
+                </Space>
+            ),
+        },
+    ]
 
     return (
         <div className="p-4">
@@ -100,9 +124,7 @@ const RoleList = () => {
                 visible={visible}
                 width={720}
             >
-                <p>Some contents...</p>
-                <p>Some contents...</p>
-                <p>Some contents...</p>
+                <Table columns={userColumns} dataSource={users} pagination={{ pageSize: 5 }} rowKey="id" />
             </Drawer>
         </div>
     )

@@ -11,5 +11,7 @@ namespace ApplicationCore.Interfaces.IService
         Task<dynamic> GetListAsync();
         Task<dynamic> RemoveAsync(Guid id);
         Task<int> CountAsync(OrderType orderType);
+        Task<dynamic> GetOrdersInUserAsync(string id);
+        Task<Order> GetAsync(Guid id);
     }
 }
