@@ -24,7 +24,7 @@ const Dashboard = () => {
     })
 
     return (
-        <Content className="p-4">
+        <div>
             <Row gutter={16} className="mb-4">
                 <Col span={6}>
                     <Card title="Nhân viên" bordered={false} extra={<Link to="/account-list"><InfoCircleOutlined /></Link>}>
@@ -47,10 +47,10 @@ const Dashboard = () => {
                     </Card>
                 </Col>
             </Row>
-            <div className="bg-white mb-4 p-4">
+            <div className="bg-white mb-4">
                 <Analysis/>
             </div>
-        </Content>
+        </div>
     )
 }
 

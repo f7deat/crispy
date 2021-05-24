@@ -1,43 +1,60 @@
 ﻿import * as React from 'react';
-import { Tabs, Row, Col, List, Typography, Badge, Empty } from 'antd';
+import { Tabs, Row, Col, List, Typography, Badge, Empty, DatePicker, Button, Space } from 'antd';
 import { Column } from '@ant-design/charts';
 import axios from 'axios';
 
 const { TabPane } = Tabs;
+const { RangePicker } = DatePicker;
 
 export const Analysis = () => {
     var data = [
         {
-            type: '家具家电',
+            type: 'T1',
             sales: 38,
         },
         {
-            type: '粮油副食',
+            type: 'T2',
             sales: 52,
         },
         {
-            type: '生鲜水果',
+            type: 'T3',
             sales: 61,
         },
         {
-            type: '美容洗护',
+            type: 'T4',
             sales: 145,
         },
         {
-            type: '母婴用品',
+            type: 'T5',
             sales: 48,
         },
         {
-            type: '进口食品',
+            type: 'T6',
             sales: 38,
         },
         {
-            type: '食品饮料',
+            type: 'T7',
             sales: 38,
         },
         {
-            type: '家庭清洁',
-            sales: 38,
+            type: 'T8',
+            sales: 67,
+        },
+        {
+            type: 'T9',
+            sales: 28,
+        },
+        {
+            type: 'T10',
+            sales: 156,
+        },
+        {
+            type: 'T11',
+            sales: 245,
+        },
+        {
+            type: 'T12',
+            sales: 145,
         },
     ];
     var config: any = {
@@ -65,12 +82,22 @@ export const Analysis = () => {
         })
     }, [])
 
+    const operations = (
+        <Space>
+            <Button type="text">Ngày</Button>
+            <Button type="text">Tuần</Button>
+            <Button type="text" danger>Tháng</Button>
+            <Button type="text">Năm</Button>
+            <RangePicker />
+        </Space>
+    )
+
     return (
-        <Tabs defaultActiveKey="1">
+        <Tabs defaultActiveKey="1" tabBarExtraContent={operations} className="p-4">
             <TabPane tab="Xuất" key="1">
                 <Row gutter={16} className="py-4">
                     <Col span={16}>
-                        <Column {...config} height={ 300 } autoFit/>
+                        <Column {...config} height={300} autoFit />
                     </Col>
                     <Col span={8}>
                         <Typography.Title level={5}>Lợi nhuận</Typography.Title>
@@ -78,7 +105,7 @@ export const Analysis = () => {
                             dataSource={customers}
                             renderItem={(item: any) => (
                                 <List.Item>
-                                    <Badge color="#f50"/> {item.name}
+                                    <Badge color="#f50" /> {item.name}
                                 </List.Item>
                             )}
                         />
@@ -86,7 +113,7 @@ export const Analysis = () => {
                 </Row>
             </TabPane>
             <TabPane tab="Nhập" key="2">
-                <Empty/>
+                <Empty />
             </TabPane>
         </Tabs>
     )

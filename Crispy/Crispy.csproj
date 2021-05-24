@@ -7,6 +7,7 @@
     <DefaultItemExcludes>$(DefaultItemExcludes);$(SpaRoot)node_modules\**</DefaultItemExcludes>
     <TypeScriptToolsVersion>Latest</TypeScriptToolsVersion>
     <UserSecretsId>ba8c59b1-fd28-441d-95d7-86717f5a75d5</UserSecretsId>
+    <RunAnalyzersDuringBuild>false</RunAnalyzersDuringBuild>
   </PropertyGroup>
 
   <ItemGroup>
@@ -30,7 +31,6 @@
     <None Remove="$(SpaRoot)**" />
     <None Include="$(SpaRoot)**" Exclude="$(SpaRoot)node_modules\**" />
   </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\Identity\Identity.csproj" />
     <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
@@ -76,6 +76,7 @@
     <TypeScriptSourceMap>False</TypeScriptSourceMap>
     <TypeScriptMapRoot />
     <TypeScriptCompileBlocked>True</TypeScriptCompileBlocked>
+    <TypeScriptSourceRoot>C:\Users\tandc\source\repos\Crispy\Crispy\ClientApp</TypeScriptSourceRoot>
   </PropertyGroup>
 
 </Project>

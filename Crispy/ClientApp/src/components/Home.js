@@ -14,9 +14,11 @@ import {
     ToolOutlined,
     FileImageOutlined,
     SettingOutlined,
-    QuestionCircleOutlined
+    QuestionCircleOutlined,
+    FolderAddOutlined
 } from '@ant-design/icons';
 import { AppRouter } from '../app-router';
+import { Content } from 'antd/lib/layout/layout';
 
 const { Sider, Header } = Layout;
 const { SubMenu } = Menu;
@@ -73,16 +75,20 @@ const Home = ({ setAuthenticated }) => {
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
                     <Menu.Item key="1" icon={<DashboardOutlined />}><Link to="/" />Dashboard</Menu.Item>
                     <Menu.Item key="2" icon={<AppstoreAddOutlined />}><Link to="/product-list" />Sản phẩm</Menu.Item>
-                    <Menu.Item key="3" icon={<InboxOutlined />}><Link to="/order-list" />Xuất / Nhập</Menu.Item>
+                    <Menu.Item key="3" icon={<FolderAddOutlined />}><Link to="/category-list" />Danh mục</Menu.Item>
+                    <Menu.Item key="4" icon={<InboxOutlined />}><Link to="/order-list" />Xuất / Nhập</Menu.Item>
                     <SubMenu key="sub1" icon={<UserOutlined />} title="Nhân viên">
-                        <Menu.Item key="4">
+                        <Menu.Item key="5">
                             <Link to="/account-list">Danh sách</Link>
                         </Menu.Item>
                     </SubMenu>
-                    <Menu.Item key="5" icon={<UserOutlined />}><Link to="/customer-list" />Khách hàng</Menu.Item>
+                    <Menu.Item key="6" icon={<UserOutlined />}><Link to="/customer-list" />Khách hàng</Menu.Item>
                     <SubMenu key="sub2" icon={<SettingOutlined />} title="Cài đặt">
-                        <Menu.Item key="6">
+                        <Menu.Item key="7">
                             <Link to="/role-list">Quyền</Link>
+                        </Menu.Item>
+                        <Menu.Item key="8">
+                            <Link to="/setting/logo">Logo</Link>
                         </Menu.Item>
                     </SubMenu>
                 </Menu>
@@ -110,7 +116,9 @@ const Home = ({ setAuthenticated }) => {
                         <Button type="text"><a href="https://def-zone.github.io/sturdy-carnival/#/" target="_blank" rel="noopener noreferrer"><QuestionCircleOutlined /></a></Button>
                     </div>
                 </Header>
-                <AppRouter/>
+                <Content className="p-4">
+                    <AppRouter />
+                </Content>
             </Layout>
         </Layout>
     )

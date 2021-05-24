@@ -4,6 +4,7 @@ import AccountAdd from './accounts/AccountAdd';
 import AccountCenter from './accounts/AccountCenter';
 import AccountList from './accounts/AccountList';
 import AccountSetting from './accounts/AccountSetting';
+import CategoryList from './categories/CategoryList';
 import Dashboard from './components/Dashboard';
 import { CustomerCenter } from './customers/CustomerCenter';
 import CustomerList from './customers/CustomerList';
@@ -14,10 +15,17 @@ import OrderSetting from './orders/OrderSetting';
 import ProductList from './products/ProductList';
 import ProductSetting from './products/ProductSetting';
 import RoleList from './roles/RoleList';
+import Logo from './settings/logo';
 
 export const AppRouter = () => {
     return (
         <Switch>
+            <Route exact path="/setting/logo">
+                <Logo />
+            </Route>
+            <Route exact path="/category-list">
+                <CategoryList />
+            </Route>
             <Route exact path="/invoice/:id">
                 <Invoice />
             </Route>
