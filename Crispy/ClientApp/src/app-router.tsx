@@ -9,6 +9,8 @@ import Dashboard from './components/Dashboard';
 import { CustomerCenter } from './customers/CustomerCenter';
 import CustomerList from './customers/CustomerList';
 import { OrderType } from './models/OrderModel';
+import ModuleList from './modules/module-list';
+import OfferList from './modules/offer/offer-list';
 import { Invoice } from './orders/Invoice';
 import OrderList from './orders/OrderList';
 import OrderSetting from './orders/OrderSetting';
@@ -20,6 +22,12 @@ import Logo from './settings/logo';
 export const AppRouter = () => {
     return (
         <Switch>
+            <Route exact path="/modules/offer/list">
+                <OfferList />
+            </Route>
+            <Route exact path="/modules">
+                <ModuleList />
+            </Route>
             <Route exact path="/setting/logo">
                 <Logo />
             </Route>

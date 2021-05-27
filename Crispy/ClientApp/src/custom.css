@@ -77,7 +77,7 @@ code {
 }
 
 .justify-end {
-    justify-content: end;
+    justify-content: flex-end;
 }
 
 .m-0 {

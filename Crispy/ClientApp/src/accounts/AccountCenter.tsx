@@ -12,11 +12,13 @@ import {
 import Title from 'antd/lib/typography/Title';
 import { OrderType } from '../models/OrderModel';
 import { Order } from '../models/entities/Order';
+import moment from 'moment';
 
 const AccountCenter = () => {
 
     const [account, setAccount] = useState<AccountModel>();
     const [orders, setOrders] = useState<any>();
+    const [manager, setManager] = useState<any>({});
 
     const { id } = useParams<any>();
 
@@ -33,6 +35,11 @@ const AccountCenter = () => {
         axios.get(`/api/order/get-orders-in-user/${id}`).then(response => {
             setOrders(response.data);
         })
+
+        axios.get(`/api/account/get-manager/${id}`).then(response => {
+            setManager(response.data);
+        })
+
     }, [id])
 
     const columns = [
@@ -76,13 +83,16 @@ const AccountCenter = () => {
                     </div>
                     <div className="text-center text-lg font-bold mb-4">{account?.name}</div>
                     <div className="mb-2">
-                        Ngày sinh: {account?.dateOfBirth}
+                        Ngày sinh: {moment(account?.dateOfBirth).format('DD/MM/YYYY')}
                     </div>
                     <div className="mb-2">
                         Số điện thoại: {account?.phoneNumber} {account?.phoneNumberConfirmed ? <CheckCircleOutlined className="text-green-500 ml-2" /> : <CheckCircleOutlined className="ml-2" />}
                     </div>
                     <div className="mb-2">
                         Email: {account?.email} {account?.emailConfirmed ? <CheckCircleOutlined className="text-green-500 ml-2" /> : <CheckCircleOutlined className="ml-2" />}
+                    </div>
+                    <div className="mb-2">
+                        Quản lý: {JSON.stringify(manager)}
                     </div>
                 </Content>
             </Col>

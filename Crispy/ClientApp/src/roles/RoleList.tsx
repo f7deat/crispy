@@ -78,10 +78,10 @@ const RoleList = () => {
         },
         {
             title: 'Tác vụ',
-            render: (text: string, record: Role) => (
+            render: (record: Role) => (
                 <Space size="small">
                     <Button type="primary" icon={<FolderOutlined />} onClick={() => drawUser(record.name)}></Button>
-                    <Button type="primary" danger disabled icon={<DeleteOutlined />} onClick={() => handleDelete(record.id)}></Button>
+                    <Button type="primary" danger icon={<DeleteOutlined />} onClick={() => handleDelete(record.id)}></Button>
                 </Space>
             ),
         },

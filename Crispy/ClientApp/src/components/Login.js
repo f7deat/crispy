@@ -10,13 +10,17 @@ import {
     FacebookFilled,
     GoogleCircleFilled
 } from '@ant-design/icons';
+import { useHistory } from 'react-router';
 
 const Login = ({ setAuthenticated }) => {
+
+    const {history} = useHistory();
 
     const onFinish = (values) => {
         axios.post('/home/login', values).then(response => {
             if (response.data.succeeded) {
                 setAuthenticated(true);
+                history.push('')
             }
         })
     };

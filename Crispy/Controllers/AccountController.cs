@@ -42,6 +42,7 @@ namespace Crispy.Controllers
             data.PhoneNumber = user.PhoneNumber;
             data.DateOfBirth = user.DateOfBirth;
             data.HireDate = user.HireDate;
+            data.ManagerId = user.ManagerId;
             var result = await _userManager.UpdateAsync(data);
             return Ok(new { result.Succeeded, result.Errors });
         }
@@ -75,10 +76,27 @@ namespace Crispy.Controllers
             return CreatedAtAction(nameof(Add), new { result.Succeeded, result.Errors });
         }
 
+        [Route("get-manager/{userId}")]
+        public async Task<IActionResult> GetManagerAsync([FromRoute] string userId)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return Ok(await _userManager.FindByIdAsync(user.ManagerId));
+        }
+
         [Route("get-list-customer")]
         public async Task<IActionResult> GetListCustomer() => Ok(await _userManager.GetUsersInRoleAsync(CRole.CUSTOMER));
-        [Route("get-users-in-role/{role}")]
-        public async Task<IActionResult> GetUsersInRoleAsync(string role) => Ok(await _userManager.GetUsersInRoleAsync(role));
+
+        [Route("get-users-in-role/{roleName}")]
+        public async Task<IActionResult> GetUsersInRoleAsync([FromRoute] string roleName)
+        {
+            var users = await _userManager.GetUsersInRoleAsync(roleName);
+            if (User.IsInRole(CRole.EMPLOYEE))
+            {
+                var user = await _userManager.GetUserAsync(User);
+                return Ok(users.Where(x => x.ManagerId == user.Id));
+            }
+            return Ok(users);
+        }
 
         [Route("add-to-roles"), HttpPost]
         public async Task<IActionResult> AddToRoles([FromBody] AddToRole addToRole)
@@ -95,6 +113,13 @@ namespace Crispy.Controllers
         {
             var customers = await _userManager.GetUsersInRoleAsync(CRole.CUSTOMER);
             return Ok(customers.OrderByDescending(x => x.Salary).Take(6));
+        }
+
+        [Route("get-roles")]
+        public async Task<IActionResult> GetRolesAsync()
+        {
+            var user = await _userManager.GetUserAsync(User);
+            return Ok(await _userManager.GetRolesAsync(user));
         }
     }
 }
