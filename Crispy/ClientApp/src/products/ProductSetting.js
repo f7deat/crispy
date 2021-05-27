@@ -1,7 +1,7 @@
 ﻿import { Button, Form, Input, InputNumber, message } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Title from 'antd/lib/typography/Title';
-import { Link, Redirect, useParams } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { SaveOutlined } from '@ant-design/icons';
 
@@ -9,6 +9,7 @@ const ProductSetting = () => {
 
     const { id } = useParams();
     const [fields, setFields] = useState(null)
+    const history = useHistory();
 
     useEffect(() => {
         if (id) {
@@ -58,6 +59,7 @@ const ProductSetting = () => {
             axios.post('/api/product/update', values).then(response => {
                 if (response.data.succeeded) {
                     message.info('Cập nhật sản phẩm thành công!');
+                    history.push('/product-list');
                 } else {
                     message.error(response.data.error);
                 }
@@ -66,7 +68,7 @@ const ProductSetting = () => {
             axios.post('/api/product/add', values).then(response => {
                 if (response.data) {
                     message.info('Tạo sản phẩm thành công!');
-                    return <Redirect to="/product-list" />;
+                    history.push('/product-list')
                 } else {
                     message.error('Tạo sản phẩm thất bại!');
                 }

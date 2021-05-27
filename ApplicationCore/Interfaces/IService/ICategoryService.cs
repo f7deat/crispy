@@ -8,5 +8,6 @@ namespace ApplicationCore.Interfaces.IService
     {
         Task<List<Category>> GetListAsync();
         Task<Category> AddAsync(Category category);
+        Task<dynamic> DeleteAsync(int id);
     }
 }

@@ -1,4 +1,4 @@
-﻿import { Alert, Button, Checkbox, DatePicker, Divider, Empty, Form, Input, message, Tabs } from 'antd';
+﻿import { Alert, Button, Checkbox, DatePicker, Divider, Empty, Form, Input, message, Select, Tabs } from 'antd';
 import Title from 'antd/lib/typography/Title';
 import axios from 'axios';
 import { useEffect, useState } from 'react';
@@ -8,10 +8,12 @@ import { CheckboxValueType } from 'antd/lib/checkbox/Group';
 import { SaveOutlined } from '@ant-design/icons';
 import { TanError } from '../models/interfaces/tanResponse';
 import moment from 'moment';
+import { ROLE_NAME } from '../roles/constants/role-constant';
 
 const { TabPane } = Tabs;
 const CheckboxGroup = Checkbox.Group;
 const dateFormat = 'YYYY-MM-DD';
+const { Option } = Select;
 
 const AccountSetting = () => {
     const { id } = useParams<any>();
@@ -20,11 +22,15 @@ const AccountSetting = () => {
     const defaultCheckedList = ['employee'];
 
     const [account, setAccount] = useState<any>({});
+    const [accounts, setAccounts] = useState<any>([])
     const [fields, setFields] = useState<any>({});
     const [activeTab, setActiveTab] = useState<string>('1');
     const [checkedList, setCheckedList] = useState<CheckboxValueType[]>(defaultCheckedList);
 
+    const [form] = Form.useForm();
+
     useEffect(() => {
+
         axios.get(`/api/account/get/${id || '0'}`).then(response => {
             setAccount(response.data);
             setFields([
@@ -42,6 +48,11 @@ const AccountSetting = () => {
                 }
             ])
         })
+
+        axios.get(`/api/account/get-users-in-role/${ROLE_NAME.EMPLOYEE}`).then(response => {
+            setAccounts(response.data);
+        })
+
     }, [id])
 
     const onChange = (list: CheckboxValueType[]) => {
@@ -101,6 +112,10 @@ const AccountSetting = () => {
         }
     }
 
+    const handleManagerChange = (accountId: string) => {
+        form.setFieldsValue({ managerId: accountId });
+      };
+
     return (
         <div className="p-4">
             <Tabs tabPosition="left" className="bg-white p-4" onChange={handleChangeTab}>
@@ -133,7 +148,16 @@ const AccountSetting = () => {
                 <TabPane tab="Cài đặt nâng cao" key="2">
                     <Title level={3}>Cài đặt nâng cao</Title>
                     <Divider />
-                    <Form layout="vertical" onFinish={handleUpdate} fields={fields}>
+                    <Form layout="vertical" onFinish={handleUpdate} fields={fields} form={form}>
+                        <Form.Item label="Quản lý" name="managerId" >
+                            <Select allowClear onChange={handleManagerChange}>
+                                {
+                                    accounts?.map((item: any) => (
+                                        <Option value={item.id} key={item.id}>{item.name}</Option>
+                                    ))
+                                }
+                            </Select>
+                        </Form.Item>
                         <Form.Item label="Lương" name="salary" >
                             <Input placeholder="Lương" required />
                         </Form.Item>

@@ -15,7 +15,8 @@ import {
     FileImageOutlined,
     SettingOutlined,
     QuestionCircleOutlined,
-    FolderAddOutlined
+    FolderAddOutlined,
+    ClusterOutlined
 } from '@ant-design/icons';
 import { AppRouter } from '../app-router';
 import { Content } from 'antd/lib/layout/layout';
@@ -91,6 +92,7 @@ const Home = ({ setAuthenticated }) => {
                             <Link to="/setting/logo">Logo</Link>
                         </Menu.Item>
                     </SubMenu>
+                    <Menu.Item key="9" icon={<ClusterOutlined />}><Link to="/modules" />Modules</Menu.Item>
                 </Menu>
             </Sider>
             <Layout>
