@@ -52,6 +52,7 @@ namespace Infrastructure.Repositories
         }
 
         public virtual async Task<T> GetByIdAsync(Guid id) => await _context.Set<T>().FindAsync(id);
+        public virtual async Task<T> GetByIdAsync(long id) => await _context.Set<T>().FindAsync(id);
 
         public async Task<int> CountAsync() => await _context.Set<T>().CountAsync();
     }

@@ -7,6 +7,7 @@ namespace ApplicationCore.Interfaces.IRepository
     public interface IAsyncRepository<T> where T : class
     {
         Task<T> GetByIdAsync(int id);
+        Task<T> GetByIdAsync(long id);
         Task<T> GetByIdAsync(Guid id);
         Task<IEnumerable<T>> ListAllAsync();
         Task<T> AddAsync(T entity);

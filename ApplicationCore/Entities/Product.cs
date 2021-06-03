@@ -32,5 +32,6 @@ namespace ApplicationCore.Entities
         public string Modifiedby { get; set; }
         [StringLength(100)]
         public string UnitValue { get; set; }
+        public long? BrandId { get; set; }
     }
 }

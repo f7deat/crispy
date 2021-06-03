@@ -10,6 +10,7 @@ import { CustomerCenter } from './customers/CustomerCenter';
 import CustomerList from './customers/CustomerList';
 import { OrderType } from './models/OrderModel';
 import ModuleList from './modules/module-list';
+import OfferDetails from './modules/offer/offer-details';
 import OfferList from './modules/offer/offer-list';
 import { Invoice } from './orders/Invoice';
 import OrderList from './orders/OrderList';
@@ -22,6 +23,9 @@ import Logo from './settings/logo';
 export const AppRouter = () => {
     return (
         <Switch>
+            <Route exact path="/modules/offer/details/:id">
+                <OfferDetails />
+            </Route>
             <Route exact path="/modules/offer/list">
                 <OfferList />
             </Route>
