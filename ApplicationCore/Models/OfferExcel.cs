@@ -12,5 +12,6 @@ namespace ApplicationCore.Models
         public string Note { get; set; }
         public DateTime DeliveryDate { get; set; }
         public decimal? UnitPrice { get; set; }
+        public string BrandName { get; set; }
     }
 }

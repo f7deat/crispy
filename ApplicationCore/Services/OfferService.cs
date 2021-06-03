@@ -44,6 +44,12 @@ namespace ApplicationCore.Services
             return _offerRepository.DeleteAsync(id);
         }
 
+        public async Task<dynamic> DeleteDetailsAsync(Guid id)
+        {
+            await _offerRepository.DeleteDetailsAsync(id);
+            return new { succeeded = true, message = "Thành công!"};
+        }
+
         public async Task<byte[]> ExportAsync(long id, ApplicationUser user)
         {
             var offer = await _offerRepository.GetByIdAsync(id);
@@ -110,7 +116,7 @@ namespace ApplicationCore.Services
                 worksheet.Cells[row, 1].Value = i + 1;
                 worksheet.Cells[row, 2].Value = colection[i].ProductName;
                 worksheet.Cells[row, 3].Value = "-";
-                worksheet.Cells[row, 4].Value = "-";
+                worksheet.Cells[row, 4].Value = colection[i].BrandName;
                 worksheet.Cells[row, 5].Value = "-";
                 worksheet.Cells[row, 6].Value = colection[i].Quantity;
                 worksheet.Cells[row, 7].Value = colection[i].UnitPrice?.ToString("#,###", cul.NumberFormat) ?? "Liên hệ";

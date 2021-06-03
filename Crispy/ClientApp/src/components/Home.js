@@ -93,6 +93,7 @@ const Home = ({ setAuthenticated }) => {
                         </Menu.Item>
                     </SubMenu>
                     <Menu.Item key="9" icon={<ClusterOutlined />}><Link to="/modules" />Modules</Menu.Item>
+                    <Menu.Item key="10" icon={<ClusterOutlined />}><Link to="/brands" />Thương hiệu</Menu.Item>
                 </Menu>
             </Sider>
             <Layout>

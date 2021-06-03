@@ -18,7 +18,16 @@ namespace ApplicationCore.Services
 
         public async Task<dynamic> AddAsync(Brand brand)
         {
+            brand.CreatedDate = DateTime.Now;
+            brand.ModifiedDate = DateTime.Now;
             return new {succeeded = true, data = await _brandRepository.AddAsync(brand)};
+        }
+
+        public async Task<dynamic> UpdateAsync(Brand brand)
+        {
+            brand.ModifiedDate = DateTime.Now;
+            await _brandRepository.UpdateAsync(brand);
+            return new {succeeded = true, data = brand};
         }
 
         public Task<IEnumerable<Brand>> GetListAsync()

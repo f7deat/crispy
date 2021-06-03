@@ -61,5 +61,11 @@ namespace Crispy.Controllers
         {
             return Ok(await _offerService.DeleteAsync(id));
         }
+
+        [HttpPost("details/delete/{id}")]
+        public async Task<IActionResult> DeleteDetailsAsync([FromRoute] Guid id)
+        {
+            return Ok(await _offerService.DeleteDetailsAsync(id));
+        }
     }
 }

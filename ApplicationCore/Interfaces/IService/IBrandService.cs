@@ -8,5 +8,6 @@ namespace ApplicationCore.Interfaces.IService
     {
         Task<IEnumerable<Brand>> GetListAsync();
         Task<dynamic> AddAsync(Brand brand);
+        Task<dynamic> UpdateAsync(Brand brand);
     }
 }

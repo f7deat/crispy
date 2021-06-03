@@ -13,5 +13,6 @@ namespace ApplicationCore.Interfaces.IRepository
         Task<dynamic> AddDetailsAsync(OfferDetail item);
         Task<List<OfferExcel>> GetOfferExcel(long id);
         Task<object> DeleteAsync(long id);
+        Task DeleteDetailsAsync(Guid id);
     }
 }

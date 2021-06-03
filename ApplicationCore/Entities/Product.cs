@@ -33,5 +33,6 @@ namespace ApplicationCore.Entities
         [StringLength(100)]
         public string UnitValue { get; set; }
         public long? BrandId { get; set; }
+        public int? CategoryId { get; set; }
     }
 }

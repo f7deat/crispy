@@ -1,4 +1,4 @@
-import { Button, DatePicker, Drawer, Input, InputNumber, Select, Space, Table } from "antd";
+import { Button, DatePicker, Drawer, Input, InputNumber, message, Popconfirm, Select, Space, Table } from "antd";
 import axios from "axios";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
@@ -52,17 +52,26 @@ export default function OfferDetails() {
     }
 
     function changeDelivveryDate(value: moment.Moment | null) {
-        setOfferDetail({...offerDetail, deliveryDate: value});
+        setOfferDetail({ ...offerDetail, deliveryDate: value });
     }
 
-    
+    function removeOffer(id: string) {
+        axios.post(`/api/offer/details/delete/${id}`).then(response => {
+            if (response.data.succeeded) {
+                message.success(response.data.message)
+                fetchData()
+            } else {
+                message.error(response.data.error)
+            }
+        })
+    }
 
     const columns = [
         {
-          title: '#',
-          render: (text: any, record: any, index: number) => (
-            <div>{index + 1}</div>
-          )
+            title: '#',
+            render: (text: any, record: any, index: number) => (
+                <div>{index + 1}</div>
+            )
         },
         {
             title: 'Sản phẩm',
@@ -71,10 +80,10 @@ export default function OfferDetails() {
             )
         },
         {
-          title: 'Ngày tạo',
+            title: 'Ngày tạo',
             render: (record: any) => (
                 <div>{moment(record.items.createdDate).format('DD/MM/YYYY')}</div>
-          )
+            )
         },
         {
             title: 'Số lượng',
@@ -95,17 +104,24 @@ export default function OfferDetails() {
             )
         },
         {
-          title: 'Tác vụ',
-          render: (record: any) => (
-              <Space>
-                  <Button icon={<DeleteOutlined/>} danger></Button>
-              </Space>
-          )
+            title: 'Tác vụ',
+            render: (record: any) => (
+                <Space>
+                    <Popconfirm
+                        title="Are you sure to delete this?"
+                        onConfirm={() => removeOffer(record.items.id)}
+                        okText="Xác nhận"
+                        cancelText="Hủy"
+                    >
+                        <Button icon={<DeleteOutlined />} danger></Button>
+                    </Popconfirm>
+                </Space>
+            )
         },
-      ];
+    ];
 
-      function exportExcel() {
-          axios({
+    function exportExcel() {
+        axios({
             url: `/api/offer/details/export/${id}`,
             method: 'POST',
             responseType: 'blob'
@@ -115,7 +131,7 @@ export default function OfferDetails() {
             var url = URL.createObjectURL(blob);
             window.open(url)
         })
-      }
+    }
 
     return (
         <div>
@@ -142,12 +158,12 @@ export default function OfferDetails() {
                 </Select>
                 <div className="mb-2">
                     <div>Nhãn hiệu</div>
-                    <Input value={offerDetail?.code}/>
+                    <Input value={offerDetail?.code} />
                 </div>
                 <div className="mb-2 flex">
                     <div className="mr-2">
                         <span className="mr-2">Ngày giao hàng</span>
-                        <DatePicker onChange={(value, dateString) => changeDelivveryDate(value)}/>
+                        <DatePicker onChange={(value, dateString) => changeDelivveryDate(value)} />
                     </div>
                     <div>
                         <span className="mr-2">Số lượng</span>
@@ -155,7 +171,7 @@ export default function OfferDetails() {
                     </div>
                 </div>
                 <div>Note</div>
-                <Input.TextArea className="mb-2" value={offerDetail?.note} onChange={(value) => setOfferDetail({...offerDetail, note: value.target.value})}/>
+                <Input.TextArea className="mb-2" value={offerDetail?.note} onChange={(value) => setOfferDetail({ ...offerDetail, note: value.target.value })} />
                 <Button type="primary" onClick={() => save()}>Lưu lại</Button>
             </Drawer>
         </div>

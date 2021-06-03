@@ -8,6 +8,7 @@ import CategoryList from './categories/CategoryList';
 import Dashboard from './components/Dashboard';
 import { CustomerCenter } from './customers/CustomerCenter';
 import CustomerList from './customers/CustomerList';
+import BrandList from './features/brands/band-list';
 import { OrderType } from './models/OrderModel';
 import ModuleList from './modules/module-list';
 import OfferDetails from './modules/offer/offer-details';
@@ -23,6 +24,9 @@ import Logo from './settings/logo';
 export const AppRouter = () => {
     return (
         <Switch>
+            <Route exact path="/brands">
+                <BrandList />
+            </Route>
             <Route exact path="/modules/offer/details/:id">
                 <OfferDetails />
             </Route>

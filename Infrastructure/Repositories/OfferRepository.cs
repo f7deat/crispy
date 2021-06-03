@@ -39,6 +39,13 @@ namespace Infrastructure.Repositories
             };
         }
 
+        public async Task DeleteDetailsAsync(Guid id)
+        {
+            var offerDetails = await _context.OfferDetails.FindAsync(id);
+            _context.OfferDetails.Remove(offerDetails);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<dynamic> GetDetailsAsync(long id)
         {
             var query = from a in _context.OfferDetails
@@ -57,6 +64,7 @@ namespace Infrastructure.Repositories
             var query = from a in _context.Offers
                         join b in _context.OfferDetails on a.Id equals b.OfferId
                         join c in _context.Products on b.ProductId equals c.Id
+                        join d in _context.Brands on c.BrandId equals d.Id
                         where a.Id == id
                         select new OfferExcel
                         {
@@ -67,7 +75,8 @@ namespace Infrastructure.Repositories
                             Note = b.Note,
                             DeliveryDate = b.DeliveryDate,
                             CreatedDate = b.CreatedDate,
-                            UnitPrice = c.UnitPrice
+                            UnitPrice = c.UnitPrice,
+                            BrandName = d.Name
                         };
             return await query.ToListAsync();
         }

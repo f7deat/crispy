@@ -1,15 +1,19 @@
-﻿import { Button, Form, Input, InputNumber, message } from 'antd';
+﻿import { Button, Form, Input, InputNumber, message, Select } from 'antd';
 import React, { useEffect, useState } from 'react';
 import Title from 'antd/lib/typography/Title';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { SaveOutlined } from '@ant-design/icons';
 
+const { Option } = Select
+
 const ProductSetting = () => {
 
     const { id } = useParams();
     const [fields, setFields] = useState(null)
     const history = useHistory();
+    const [brands, setBrands] = useState([])
+    const [categories, setCategories] = useState([])
 
     useEffect(() => {
         if (id) {
@@ -48,10 +52,24 @@ const ProductSetting = () => {
                         name: 'createdBy',
                         value: response.data.createdBy
                     },
+                    {
+                        name: 'brandId',
+                        value: response.data.brandId
+                    },
+                    {
+                        name: 'categoryId',
+                        value: response.data.categoryId
+                    }
                 ])
             }
             fetchData();
         }
+        axios.get(`/api/brand/get-list`).then(response => {
+            setBrands(response.data)
+        })
+        axios.get(`/api/category/get-list`).then(response => {
+            setCategories(response.data)
+        })
     }, [id])
 
     const handleFinish = (values) => {
@@ -97,8 +115,26 @@ const ProductSetting = () => {
                         <Form.Item label="Đơn giá" name="unitPrice" className="mr-4 inline-block">
                             <InputNumber placeholder="Đơn giá" />
                         </Form.Item>
-                        <Form.Item label="Kho" name="unitStock" className="inline-block">
+                        <Form.Item label="Kho" name="unitStock" className="inline-block mr-4">
                             <InputNumber placeholder="Kho" />
+                        </Form.Item>
+                        <Form.Item className="inline-block mr-4" label="Thương hiệu" style={{width: 200}} name="brandId">
+                            <Select>
+                                {
+                                    brands.map((value) => (
+                                        <Option value={value.id} key={value.id}>{value.name}</Option>
+                                    ))
+                                }
+                            </Select>
+                        </Form.Item>
+                        <Form.Item className="inline-block" label="Danh mục" style={{width: 200}} name="categoryId">
+                            <Select>
+                                {
+                                    categories.map((value) => (
+                                        <Option value={value.id} key={value.id}>{value.name}</Option>
+                                    ))
+                                }
+                            </Select>
                         </Form.Item>
                     </Form.Item>
                     <Form.Item className="text-right">

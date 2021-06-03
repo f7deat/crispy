@@ -26,5 +26,14 @@ namespace Crispy.Controllers
         {
             return Ok(await _brandService.GetListAsync());
         }
+
+        [HttpPost("add")]
+        public async Task<IActionResult> AddAsync([FromBody] Brand brand)
+        {
+            var user = await _userManager.GetUserAsync(User);
+            brand.CreatedBy = user.Id;
+            brand.ModifiedBy = user.Id;
+            return CreatedAtAction(nameof(AddAsync), await _brandService.AddAsync(brand));
+        }
     }
 }
